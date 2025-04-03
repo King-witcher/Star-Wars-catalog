@@ -6,7 +6,7 @@ on:
 
 jobs:
   Audit:
-    name: Check code for vulnerabilities
+    name: Audit dependencies for vulnerabilities
     runs-on: macos-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Run Audit to Check fo Vulnerabillities
+      - name: Audit code
         run: yarn audit
   
   Lint:
@@ -80,5 +80,5 @@ jobs:
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: yarn install --dev --frozen-lockfile
 
-      - name: Check code quality
+      - name: Run tests
         run: yarn vitest run
