@@ -1,11 +1,12 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"vcs": {
-		"enabled": false,
-		"clientKind": "git",
-		"useIgnoreFile": false
-	},
-	"extends": [
-		"@giuseppelanna/biomejs-configs"
-	]
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "extends": ["@giuseppelanna/biomejs-configs"],
+  "files": {
+    "include": ["src/**/*.ts", "src/**/*.tsx"]
+  }
 }

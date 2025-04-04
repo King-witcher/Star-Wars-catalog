@@ -6,7 +6,7 @@ on:
 
 jobs:
   Audit:
-    name: Audit dependencies for vulnerabilities
+    name: Audit
     runs-on: macos-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         run: yarn audit
   
   Lint:
-    name: Run Biome check
+    name: Biome Check
     runs-on: macos-latest
 
     steps:
@@ -53,7 +53,7 @@ jobs:
         run: yarn lint
   
   Test:
-    name: Run automated tests
+    name: Test
     runs-on: macos-latest
 
     steps:
