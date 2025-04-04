@@ -1,5 +1,5 @@
-import { Navbar } from './navbar'
 import { getByRole, render } from '@testing-library/react'
+import { Navbar } from './navbar'
 
 describe(Navbar, () => {
   let container: HTMLElement

@@ -1,8 +1,7 @@
-import { Person } from '@/types/person'
-import { PersonRow } from './row'
 import person_ from '@/fixtures/person.json'
+import { Person } from '@/types/person'
 import { getByTestId, getByText, render } from '@testing-library/react'
-import { faker } from '@faker-js/faker'
+import { PersonRow } from './row'
 
 const person = person_ as unknown as Person
 
