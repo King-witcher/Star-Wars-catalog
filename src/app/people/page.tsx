@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { PersonRow } from './row'
 
 export default function Page() {
   const query = useInfiniteQuery({
@@ -53,36 +54,16 @@ export default function Page() {
             <TableBody>
               {query.data?.pages.map((page, pageIndex) =>
                 page.results.map((person, personIndex) => {
-                  const height = (Number(person.height) / 100)
-                    .toFixed(2)
-                    .replace('.', ',')
-
-                  const mass = person.mass.replace('.', ',')
-
                   const isLast =
                     pageIndex === query.data.pages.length - 1 &&
                     personIndex === page.results.length - 1
 
                   return (
-                    <TableRow
-                      hover
-                      className="cursor-pointer"
-                      key={person.name}
+                    <PersonRow
+                      person={person}
+                      key={person.url}
                       ref={isLast ? lastElementRef : null}
-                    >
-                      <TableCell>{person.name}</TableCell>
-                      <TableCell>{person.gender}</TableCell>
-                      <TableCell>{person.hair_color}</TableCell>
-                      <TableCell>{person.eye_color}</TableCell>
-                      <TableCell>
-                        {person.height === 'unknown'
-                          ? 'unknown'
-                          : `${height} m`}
-                      </TableCell>
-                      <TableCell>
-                        {person.mass === 'unknown' ? 'unknown' : `${mass} kg`}
-                      </TableCell>
-                    </TableRow>
+                    />
                   )
                 })
               )}
