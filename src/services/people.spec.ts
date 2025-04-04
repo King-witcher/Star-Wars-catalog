@@ -1,7 +1,7 @@
+import { faker } from '@faker-js/faker'
+import axios from 'axios'
 import { Mock } from 'vitest'
 import { SWAPI } from './swapi'
-import axios from 'axios'
-import { faker } from '@faker-js/faker'
 
 vi.mock('axios', () => {
   return {

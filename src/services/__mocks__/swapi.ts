@@ -1,6 +1,5 @@
 import { Person } from '@/types/person'
 import { Planet } from '@/types/planet'
-import { block } from '@/utils/block'
 
 export namespace SWAPI {
   export type PaginatedResponse<T> = {
