@@ -8,8 +8,8 @@ describe(Navbar, () => {
   })
 
   it('renders each required button', () => {
-    getByRole(container, 'link', { name: 'Personagens' })
-    getByRole(container, 'link', { name: 'Planetas' })
-    getByRole(container, 'link', { name: 'Favoritos' })
+    getByRole(container, 'link', { name: 'People' })
+    getByRole(container, 'link', { name: 'Planets' })
+    getByRole(container, 'link', { name: 'Favorites' })
   })
 })

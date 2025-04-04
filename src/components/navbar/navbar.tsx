@@ -12,32 +12,32 @@ export function Navbar() {
       <AppBar>
         <Toolbar>
           <Typography fontWeight={700} variant="h6">
-            Catálogo de Star Wars
+            SW Catalog
           </Typography>
           <div className="flex gap-[10px] ml-[40px]">
             <Button
               color="inherit"
               LinkComponent={Link}
-              href="/personagens"
+              href="/people"
               size="large"
             >
-              Personagens
+              People
             </Button>
             <Button
               color="inherit"
               LinkComponent={Link}
-              href="/planetas"
+              href="/planets"
               size="large"
             >
-              Planetas
+              Planets
             </Button>
             <Button
               color="inherit"
               LinkComponent={Link}
-              href="/favoritos"
+              href="/favorites"
               size="large"
             >
-              Favoritos
+              Favorites
             </Button>
           </div>
         </Toolbar>

@@ -1,6 +1,7 @@
 import { Person } from '@/types/person'
 import { Planet } from '@/types/planet'
 import { block } from '@/utils/block'
+import { stripPageNumber } from '@/utils/swapi'
 import axios from 'axios'
 
 export namespace SWAPI {
@@ -19,12 +20,6 @@ export namespace SWAPI {
     results: T[]
   }
 
-  function extractPageNumber(url: string | null): number | null {
-    if (!url) return null
-    const parsedUrl = new URL(url)
-    return Number(parsedUrl.searchParams.get('page'))
-  }
-
   export async function getPlanets(
     page: number
   ): Promise<PaginatedResponse<Planet>> {
@@ -35,7 +30,7 @@ export namespace SWAPI {
 
     return {
       count: data.count,
-      next: extractPageNumber(data.next),
+      next: stripPageNumber(data.next),
       results: data.results,
     }
   }
@@ -50,7 +45,7 @@ export namespace SWAPI {
 
     return {
       count: data.count,
-      next: extractPageNumber(data.next),
+      next: stripPageNumber(data.next),
       results: data.results,
     }
   }
