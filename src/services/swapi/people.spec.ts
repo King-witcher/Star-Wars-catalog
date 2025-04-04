@@ -1,7 +1,11 @@
+import person_ from '@/fixtures/person.json'
+import { Person } from '@/types/person'
 import { faker } from '@faker-js/faker'
 import axios from 'axios'
 import { Mock } from 'vitest'
-import { SWAPI } from './swapi'
+import { getPeople, getPerson } from './people'
+
+const person = person_ as unknown as Person
 
 vi.mock('axios', () => {
   return {
@@ -25,7 +29,7 @@ vi.mock('axios', () => {
   }
 })
 
-describe('SWAPI', () => {
+describe('people', () => {
   afterEach(() => {
     vi.clearAllMocks()
   })
@@ -42,7 +46,7 @@ describe('SWAPI', () => {
       }
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await SWAPI.getPeople(faker.number.int())
+      const result = await getPeople(faker.number.int())
 
       expect(result.next).toBe(next)
     })
@@ -56,9 +60,21 @@ describe('SWAPI', () => {
       }
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await SWAPI.getPeople(faker.number.int())
+      const page = faker.number.int()
+      const result = await getPeople(page)
 
       expect(result.next).toBeNull()
+      expect(axios.get).toHaveBeenCalledWith(`/people?page=${page}`)
+    })
+  })
+
+  describe('getPerson', () => {
+    it('returns a person', async () => {
+      ;(<Mock>axios.get).mockResolvedValue({ data: person })
+      const result = await getPerson(666)
+
+      expect(result).toBe(person)
+      expect(axios.get).toHaveBeenCalledWith('/people/666')
     })
   })
 })

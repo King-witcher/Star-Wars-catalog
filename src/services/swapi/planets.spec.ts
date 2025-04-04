@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import axios from 'axios'
 import { Mock } from 'vitest'
-import { SWAPI } from './swapi'
+import { getPlanets } from './planets'
 
 vi.mock('axios', () => {
   return {
@@ -42,7 +42,7 @@ describe('SWAPI', () => {
       }
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await SWAPI.getPlanets(faker.number.int())
+      const result = await getPlanets(faker.number.int())
 
       expect(result.next).toBe(next)
     })
@@ -56,7 +56,7 @@ describe('SWAPI', () => {
       }
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await SWAPI.getPlanets(faker.number.int())
+      const result = await getPlanets(faker.number.int())
 
       expect(result.next).toBeNull()
     })
