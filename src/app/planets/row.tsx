@@ -2,13 +2,13 @@
 
 import { Planet } from '@/types/planet'
 import { stripId } from '@/utils/swapi'
+import TableCell from '@mui/material/TableCell'
 import type { TableRowProps } from '@mui/material/TableRow'
 import TableRow from '@mui/material/TableRow'
+import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 import { memo } from 'react'
 import { formatDiameter, formatPopulation } from './helpers'
-import Typography from '@mui/material/Typography'
-import TableCell from '@mui/material/TableCell'
 
 interface Props extends TableRowProps {
   planet: Planet
