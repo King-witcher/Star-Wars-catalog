@@ -72,7 +72,7 @@ export function ClientComponent({ planet, residents }: Props) {
 
           {residentsQuery.data?.length === 0 && (
             <Typography color="textSecondary">
-              No vehicles found for this character.
+              This planet has no known residents.
             </Typography>
           )}
           {Boolean(residentsQuery.data?.length) && (
