@@ -1,16 +1,16 @@
 'use client'
 
+import { useFavorites } from '@/contexts/favorites'
 import { Person } from '@/types/person'
 import { formatMass, formatPersonHeight } from '@/utils/format'
 import { stripId } from '@/utils/swapi'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import { IconButton, TableCell } from '@mui/material'
 import type { TableRowProps } from '@mui/material/TableRow'
 import TableRow from '@mui/material/TableRow'
-import { memo } from 'react'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import { useFavorites } from '@/contexts/favorites'
 import Link from 'next/link'
+import { memo } from 'react'
 
 interface Props extends TableRowProps {
   person: Person

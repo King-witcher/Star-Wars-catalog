@@ -44,7 +44,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <div className="flex flex-col sm:flex-row justify-between">
         <Typography variant="h1" color="primary">
           People
@@ -60,45 +60,51 @@ export default function Page() {
         />
       </div>
 
-      <Paper className="flex flex-col items-center mt-[10px]">
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Character</TableCell>
-                <TableCell>Gender</TableCell>
-                <TableCell>Hair Color</TableCell>
-                <TableCell>Eye Color</TableCell>
-                <TableCell>Height</TableCell>
-                <TableCell>Mass</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {query.data?.pages.map((page, pageIndex) =>
-                page.results.map((person, personIndex) => {
-                  const isLast =
-                    pageIndex === query.data.pages.length - 1 &&
-                    personIndex === page.results.length - 1
+      <div className="flex-1 relative">
+        <Paper className="flex absolute inset-0 flex-col items-center mt-[10px] max-h-screen overflow-hidden">
+          <TableContainer>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Character</TableCell>
+                  <TableCell>Gender</TableCell>
+                  <TableCell>Hair Color</TableCell>
+                  <TableCell>Eye Color</TableCell>
+                  <TableCell>Height</TableCell>
+                  <TableCell>Mass</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {query.data?.pages.map((page, pageIndex) =>
+                  page.results.map((person, personIndex) => {
+                    const isLast =
+                      pageIndex === query.data.pages.length - 1 &&
+                      personIndex === page.results.length - 1
 
-                  return (
-                    <PersonRow
-                      person={person}
-                      key={person.url}
-                      ref={isLast ? lastElementRef : null}
-                    />
-                  )
-                })
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                    return (
+                      <PersonRow
+                        person={person}
+                        key={person.url}
+                        ref={isLast ? lastElementRef : null}
+                      />
+                    )
+                  })
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        {query.isFetching && (
-          <div className="p-[20px]">
-            <CircularProgress />
-          </div>
-        )}
-      </Paper>
+          {query.isFetching && (
+            <div className="p-[20px]">
+              <CircularProgress />
+            </div>
+          )}
+
+          {query.isError && (
+            <Typography color="error">Failed to load people :(</Typography>
+          )}
+        </Paper>
+      </div>
     </div>
   )
 }
