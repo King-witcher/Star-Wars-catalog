@@ -18,3 +18,10 @@ export function formatPopulation(value: string): string {
   const trillions = Math.round(population / 1_000_000_000_0) / 100
   return `${trillions} tri`
 }
+
+export function formatDiameter(value: string): string {
+  if (value === 'unknown') return 'unknown'
+
+  const diameter = Number(value)
+  return `${diameter.toLocaleString('en-US')} km`
+}

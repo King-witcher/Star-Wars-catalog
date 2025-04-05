@@ -1,4 +1,4 @@
-import { formatPopulation } from './helpers'
+import { formatDiameter, formatPopulation } from './helpers'
 
 describe(formatPopulation, () => {
   it('should return unknown when the population is unknown', () => {
@@ -39,5 +39,17 @@ describe(formatPopulation, () => {
     expect(result1).toBe('1.23 tri')
     expect(result2).toBe('1.24 tri')
     expect(result3).toBe('1 tri')
+  })
+})
+
+describe(formatDiameter, () => {
+  it('should return unknown when the diameter is unknown', () => {
+    const result = formatDiameter('unknown')
+    expect(result).toBe('unknown')
+  })
+
+  it('should return string separated with commas', () => {
+    const result = formatDiameter('123456')
+    expect(result).toBe('123,456 km')
   })
 })
