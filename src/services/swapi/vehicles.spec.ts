@@ -1,9 +1,8 @@
+import _vehicle from '@/fixtures/vehicle.json'
+import { Vehicle } from '@/types/vehicle'
 import { faker } from '@faker-js/faker'
 import axios from 'axios'
 import { Mock } from 'vitest'
-import { getPlanets } from './planets'
-import { Vehicle } from '@/types/vehicle'
-import _vehicle from '@/fixtures/vehicle.json'
 import { getVehicle } from './vehicles'
 const vehicle = _vehicle as unknown as Vehicle
 
