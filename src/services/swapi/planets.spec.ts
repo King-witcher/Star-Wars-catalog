@@ -25,7 +25,7 @@ vi.mock('axios', () => {
   }
 })
 
-describe('SWAPI', () => {
+describe('planets', () => {
   afterEach(() => {
     vi.clearAllMocks()
   })
