@@ -1,4 +1,6 @@
-export type Planet = {
+import { BaseEntity } from './base-entity'
+
+export interface Planet extends BaseEntity {
   climate: string
   diameter: string
   gravity: string
@@ -9,5 +11,4 @@ export type Planet = {
   rotation_period: string
   surface_water: string
   terrain: string
-  url: string
 }

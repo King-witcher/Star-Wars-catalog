@@ -1,4 +1,6 @@
-export type Vehicle = {
+import { BaseEntity } from './base-entity'
+
+export interface Vehicle extends BaseEntity {
   cargo_capacity: string
   consumables: string
   cost_in_credits: string
@@ -11,6 +13,5 @@ export type Vehicle = {
   passengers: string
   pilots: string[]
   films: string[]
-  url: string
   vehicle_class: string
 }

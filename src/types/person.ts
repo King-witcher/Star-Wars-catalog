@@ -1,4 +1,6 @@
-export type Person = {
+import { BaseEntity } from './base-entity'
+
+export interface Person extends BaseEntity {
   name: string
   height: string | 'unknown'
   mass: string
@@ -12,7 +14,4 @@ export type Person = {
   species: string[]
   vehicles: string[]
   starships: string[]
-  created: string
-  edited: string
-  url: string
 }
