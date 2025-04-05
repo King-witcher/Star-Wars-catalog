@@ -1,3 +1,4 @@
+import { FavoritesProvider } from '@/contexts/favorites'
 import { theme } from '@/theme'
 import { queryClient } from '@/utils/query-client'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
@@ -14,7 +15,9 @@ export function Providers({ children }: Props) {
   return (
     <AppRouterCacheProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <FavoritesProvider>{children}</FavoritesProvider>
+        </ThemeProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </AppRouterCacheProvider>
