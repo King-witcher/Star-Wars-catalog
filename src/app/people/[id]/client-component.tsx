@@ -31,15 +31,15 @@ export function ClientComponent({ person, vehicles }: Props) {
   const id = stripId(person.url)
   const isFavorite = isFavoriteById('people', id)
 
-  const vehiclesQuery = useQuery({
-    queryKey: ['vehicles', person.url],
-    queryFn: async () => vehicles,
-  })
-
   function handleClickFavorite() {
     if (isFavorite) unfavorite('people', id)
     else setFavorite('people', id, person.name)
   }
+
+  const vehiclesQuery = useQuery({
+    queryKey: ['vehicles', person.url],
+    queryFn: async () => vehicles,
+  })
 
   return (
     <div>

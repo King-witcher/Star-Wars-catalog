@@ -1,6 +1,7 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
+import { useFavorites } from '@/contexts/favorites'
 import { Person } from '@/types/person'
 import { Planet } from '@/types/planet'
 import {
@@ -9,7 +10,11 @@ import {
   formatPopulation,
   formatRotationPeriod,
 } from '@/utils/format'
-import { CircularProgress } from '@mui/material'
+import { stripId } from '@/utils/swapi'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import CircularProgress from '@mui/material/CircularProgress'
+import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -27,6 +32,15 @@ interface Props {
 }
 
 export function ClientComponent({ planet, residents }: Props) {
+  const { isFavoriteById, setFavorite, unfavorite } = useFavorites()
+  const id = stripId(planet.url)
+  const isFavorite = isFavoriteById('planets', id)
+
+  function handleClickFavorite() {
+    if (isFavorite) unfavorite('planets', id)
+    else setFavorite('planets', id, planet.name)
+  }
+
   const residentsQuery = useQuery({
     queryKey: ['residents', planet.url],
     queryFn: async () => residents,
@@ -34,9 +48,18 @@ export function ClientComponent({ planet, residents }: Props) {
 
   return (
     <div>
-      <Typography variant="h2" color="primary">
-        {planet.name}
-      </Typography>
+      <div className="flex items-center gap-[10px]">
+        <IconButton onClick={handleClickFavorite}>
+          {isFavorite ? (
+            <FavoriteIcon fontSize="large" color="error" />
+          ) : (
+            <FavoriteBorderIcon fontSize="large" />
+          )}
+        </IconButton>
+        <Typography variant="h2" color="primary">
+          {planet.name}
+        </Typography>
+      </div>
       <div className="flex gap-[20px]">
         <div className="flex-1">
           <Typography className="!mt-[20px]" variant="h5">
