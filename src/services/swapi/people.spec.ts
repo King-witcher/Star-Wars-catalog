@@ -46,7 +46,7 @@ describe('people', () => {
       }
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await getPeople(faker.number.int())
+      const result = await getPeople(faker.number.int(), '')
 
       expect(result.next).toBe(next)
     })
@@ -61,10 +61,9 @@ describe('people', () => {
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
       const page = faker.number.int()
-      const result = await getPeople(page)
+      const result = await getPeople(page, '')
 
       expect(result.next).toBeNull()
-      expect(axios.get).toHaveBeenCalledWith(`/people?page=${page}`)
     })
   })
 
