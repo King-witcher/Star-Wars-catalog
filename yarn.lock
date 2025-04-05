@@ -518,9 +518,9 @@
   integrity sha512-3vm4by+B5lvsFPSyep3ELWmZfE3kicDtmemVpuwl1yH7tqtnHdsA6hG8fbXedMVdkzgtvzWoRgjSB4Q+FHnZiw==
 
 "@giuseppelanna/biomejs-configs@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@giuseppelanna/biomejs-configs/-/biomejs-configs-3.0.0.tgz#64dd3a9ff710be1f3e89f11b4ba4f17abf2a5c8a"
-  integrity sha512-lsOtoOXd0GcppNfN8I6Hc+zUCjCp0HUMojwR0nPtoU0Hq3fL0KAnK3YllrPsggtAnds4yIguO6XPGFLc7CsycQ==
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@giuseppelanna/biomejs-configs/-/biomejs-configs-3.0.1.tgz#34b5b180d1b33c854710e9e270a695e0acbdbca0"
+  integrity sha512-j9vMZgC0xmZtQLjLTaC/eL4sBw8ZrsUrjsucmKEnh3z43gLgjRPXnfZJHrb6Vas+AvLlRHJ/Uq4ZXYDV7AtkvA==
 
 "@img/sharp-darwin-arm64@0.33.5":
   version "0.33.5"
