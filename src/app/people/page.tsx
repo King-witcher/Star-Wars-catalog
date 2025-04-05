@@ -25,7 +25,6 @@ export default function Page() {
 
   const query = useInfiniteQuery({
     queryKey: ['people', debouncedSearch],
-    staleTime: 1000 * 60 * 10, // 10 minutes
     async queryFn({ pageParam }) {
       return getPeople(pageParam, debouncedSearch)
     },

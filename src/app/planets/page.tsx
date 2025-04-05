@@ -70,6 +70,7 @@ export default function Page() {
                 <TableCell>Terrain</TableCell>
                 <TableCell>Population</TableCell>
                 <TableCell>Diameter</TableCell>
+                <TableCell>Orbit</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

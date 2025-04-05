@@ -20,3 +20,8 @@ export async function getPlanets(
     results: data.results,
   }
 }
+
+export async function getPlanet(id: number): Promise<Planet> {
+  const { data } = await api.get<Planet>(`/planets/${id}`)
+  return data
+}

@@ -1,4 +1,38 @@
-import { formatDiameter, formatPopulation } from './helpers'
+import {
+  formatLength,
+  formatMass,
+  formatOrbitalPeriod,
+  formatPersonHeight,
+  formatPopulation,
+} from './format'
+
+describe('formatMass', () => {
+  test('format mass should return a string with kg', () => {
+    const mass = '123'
+    const result = formatMass(mass)
+    expect(result).toBe('123 kg')
+  })
+
+  test('format mass should return unknown when the mass is unknown', () => {
+    const mass = 'unknown'
+    const result = formatMass(mass)
+    expect(result).toBe('unknown')
+  })
+})
+
+describe('formatHeight', () => {
+  test('format height should return a string with m', () => {
+    const height = '190'
+    const result = formatPersonHeight(height)
+    expect(result).toBe('1.90 m')
+  })
+
+  test('format height should return unknown when the height is unknown', () => {
+    const height = 'unknown'
+    const result = formatPersonHeight(height)
+    expect(result).toBe('unknown')
+  })
+})
 
 describe(formatPopulation, () => {
   it('should return unknown when the population is unknown', () => {
@@ -42,14 +76,26 @@ describe(formatPopulation, () => {
   })
 })
 
-describe(formatDiameter, () => {
+describe(formatLength, () => {
   it('should return unknown when the diameter is unknown', () => {
-    const result = formatDiameter('unknown')
+    const result = formatLength('unknown')
     expect(result).toBe('unknown')
   })
 
   it('should return string separated with commas', () => {
-    const result = formatDiameter('123456')
+    const result = formatLength('123456')
     expect(result).toBe('123,456 km')
+  })
+})
+
+describe(formatOrbitalPeriod, () => {
+  it('should return unknown when the period is unknown', () => {
+    const result = formatOrbitalPeriod('unknown')
+    expect(result).toBe('unknown')
+  })
+
+  it('should return string separated with commas', () => {
+    const result = formatOrbitalPeriod('123456')
+    expect(result).toBe('123,456 days')
   })
 })

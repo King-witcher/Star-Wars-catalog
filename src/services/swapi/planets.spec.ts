@@ -1,7 +1,10 @@
+import _planet from '@/fixtures/planet.json'
+import { Planet } from '@/types/planet'
 import { faker } from '@faker-js/faker'
 import axios from 'axios'
 import { Mock } from 'vitest'
-import { getPlanets } from './planets'
+import { getPlanet, getPlanets } from './planets'
+const planet = _planet as unknown as Planet
 
 vi.mock('axios', () => {
   return {
@@ -30,7 +33,7 @@ describe('planets', () => {
     vi.clearAllMocks()
   })
 
-  describe('getPlanets', () => {
+  describe(getPlanets, () => {
     it('properly returns the next page', async () => {
       const next = faker.number.int()
 
@@ -42,7 +45,7 @@ describe('planets', () => {
       }
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await getPlanets(faker.number.int())
+      const result = await getPlanets(faker.number.int(), '')
 
       expect(result.next).toBe(next)
     })
@@ -56,9 +59,20 @@ describe('planets', () => {
       }
       ;(axios.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await getPlanets(faker.number.int())
+      const result = await getPlanets(faker.number.int(), '')
 
       expect(result.next).toBeNull()
+    })
+  })
+
+  describe(getPlanet, () => {
+    it('returns a person', async () => {
+      const id = faker.number.int()
+      ;(<Mock>axios.get).mockResolvedValue({ data: planet })
+      const result = await getPlanet(id)
+
+      expect(axios.get).toHaveBeenCalledWith(`/planets/${id}`)
+      expect(result).toBe(planet)
     })
   })
 })

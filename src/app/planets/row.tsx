@@ -1,6 +1,7 @@
 'use client'
 
 import { Planet } from '@/types/planet'
+import { formatLength, formatPopulation } from '@/utils/format'
 import { stripId } from '@/utils/swapi'
 import TableCell from '@mui/material/TableCell'
 import type { TableRowProps } from '@mui/material/TableRow'
@@ -8,7 +9,6 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 import { memo } from 'react'
-import { formatDiameter, formatPopulation } from './helpers'
 
 interface Props extends TableRowProps {
   planet: Planet
@@ -60,7 +60,7 @@ export const PlanetRow = memo(function PlanetRow({ planet, ...rest }: Props) {
           variant="body2"
           color={planet.diameter === 'unknown' ? 'textDisabled' : 'textPrimary'}
         >
-          {formatDiameter(planet.diameter)}
+          {formatLength(planet.diameter)}
         </Typography>
       </TableCell>
       <TableCell>
