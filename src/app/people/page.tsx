@@ -47,7 +47,7 @@ export default function Page() {
     <div className="flex flex-col">
       <div className="flex flex-col sm:flex-row justify-between">
         <Typography variant="h1" color="primary">
-          Characters
+          People
         </Typography>
 
         <TextField

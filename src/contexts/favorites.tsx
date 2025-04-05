@@ -1,39 +1,31 @@
 'use client'
 
-import { Person } from '@/types/person'
-import { Planet } from '@/types/planet'
-import { stripId } from '@/utils/swapi'
 import { ReactNode, createContext, use, useEffect, useState } from 'react'
 
 /** Maps each collection's name to its type. Every  */
-export type FavoriteMap = {
-  people: Person
-  planets: Planet
-}
+export type Collection = 'people' | 'planets'
 
 interface FavoritesData {
   /** Sets an entity as favorite. */
-  setFavorite<T extends keyof FavoriteMap>(
-    collection: T,
-    entity: FavoriteMap[T]
-  ): void
+  setFavorite(collection: Collection, id: number, name: string): void
 
-  isFavorite<T extends keyof FavoriteMap>(collection: T, id: number): boolean
+  /** Sets an entity as favorite. */
+  unfavorite(collection: Collection, id: number): void
+
+  isFavoriteById(collection: Collection, id: number): boolean
 
   /** Gets all favorite items from a collection */
-  getFavorites<T extends keyof FavoriteMap>(collection: T): FavoriteMap[T][]
-}
-
-interface Props {
-  children: ReactNode
+  getFavorites(collection: Collection): { id: number; name: string }[]
 }
 
 const FavoritesContext = createContext<FavoritesData>({} as FavoritesData)
 
-export function FavoritesProvider({ children }: Props) {
+export function FavoritesProvider(props: {
+  children: ReactNode
+}) {
   /** Represents the collections object in localStorage. */
   type FavoritesObject = {
-    [K in keyof FavoriteMap]: Record<number, FavoriteMap[K]>
+    [K in Collection]: Record<number, string>
   }
 
   const [favorites, setFavorites] = useState<FavoritesObject>({
@@ -41,20 +33,15 @@ export function FavoritesProvider({ children }: Props) {
     planets: {},
   })
 
-  function setFavorite<T extends keyof FavoriteMap>(
-    collection: T,
-    entity: FavoriteMap[T]
-  ) {
-    const entityId = stripId(entity.url)
-
+  function setFavorite(collection: Collection, id: number, name: string) {
     // If the entity is already in the collection, avoid an unnecessary rerender.
-    if (favorites[collection][entityId]) return
+    if (favorites[collection][id] !== undefined) return
 
     const newFavorites: FavoritesObject = {
       ...favorites,
       [collection]: {
         ...favorites[collection],
-        [entityId]: entity,
+        [id]: name,
       },
     }
 
@@ -62,17 +49,34 @@ export function FavoritesProvider({ children }: Props) {
     setFavorites(newFavorites)
   }
 
-  function isFavorite<T extends keyof FavoriteMap>(
-    collection: T,
-    id: number
-  ): boolean {
+  function unfavorite(collection: Collection, id: number) {
+    // If the entity is not in the collection, avoid an unnecessary rerender.
+    if (!favorites[collection][id] === undefined) return
+
+    const newCollection = {
+      ...favorites[collection],
+    }
+    delete newCollection[id]
+    const newFavorites: FavoritesObject = {
+      ...favorites,
+      [collection]: newCollection,
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(newFavorites))
+    setFavorites(newFavorites)
+  }
+
+  function isFavoriteById(collection: Collection, id: number): boolean {
     return Boolean(favorites[collection][id])
   }
 
-  function getFavorites<T extends keyof FavoriteMap>(
-    collection: T
-  ): FavoriteMap[T][] {
-    return Object.values(favorites[collection])
+  function getFavorites(
+    collection: Collection
+  ): { id: number; name: string }[] {
+    return Object.entries(favorites[collection]).map(([id, name]) => ({
+      id: Number(id),
+      name,
+    }))
   }
 
   useEffect(function syncStateWithLocalStorageAfterHydration() {
@@ -82,8 +86,15 @@ export function FavoritesProvider({ children }: Props) {
   }, [])
 
   return (
-    <FavoritesContext value={{ setFavorite, isFavorite, getFavorites }}>
-      {children}
+    <FavoritesContext
+      value={{
+        setFavorite,
+        unfavorite,
+        isFavoriteById,
+        getFavorites,
+      }}
+    >
+      {props.children}
     </FavoritesContext>
   )
 }
