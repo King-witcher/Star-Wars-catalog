@@ -1,10 +1,15 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
+import { useFavorites } from '@/contexts/favorites'
 import { Person } from '@/types/person'
 import { Vehicle } from '@/types/vehicle'
 import { formatMass, formatPersonHeight } from '@/utils/format'
-import { CircularProgress } from '@mui/material'
+import { stripId } from '@/utils/swapi'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import CircularProgress from '@mui/material/CircularProgress'
+import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -22,16 +27,34 @@ interface Props {
 }
 
 export function ClientComponent({ person, vehicles }: Props) {
+  const { isFavoriteById, setFavorite, unfavorite } = useFavorites()
+  const id = stripId(person.url)
+  const isFavorite = isFavoriteById('people', id)
+
   const vehiclesQuery = useQuery({
     queryKey: ['vehicles', person.url],
     queryFn: async () => vehicles,
   })
 
+  function handleClickFavorite() {
+    if (isFavorite) unfavorite('people', id)
+    else setFavorite('people', id, person.name)
+  }
+
   return (
     <div>
-      <Typography variant="h2" color="primary">
-        {person.name}
-      </Typography>
+      <div className="flex items-center gap-[10px]">
+        <IconButton onClick={handleClickFavorite}>
+          {isFavorite ? (
+            <FavoriteIcon fontSize="large" color="error" />
+          ) : (
+            <FavoriteBorderIcon fontSize="large" />
+          )}
+        </IconButton>
+        <Typography variant="h2" color="primary">
+          {person.name}
+        </Typography>
+      </div>
       <div className="flex gap-[20px]">
         <div className="flex-1">
           <Typography className="!mt-[20px]" variant="h5">
