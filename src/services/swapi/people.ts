@@ -4,10 +4,15 @@ import { block } from '@/utils/block'
 import { stripPageNumber } from '@/utils/swapi'
 import { api } from './api'
 
-export async function getPeople(page = 1): Promise<PaginatedData<Person>> {
+export async function getPeople(
+  page: number,
+  search: string
+): Promise<PaginatedData<Person>> {
   const { data } = await block(() => {
     const searchParams = new URLSearchParams([['page', page.toString()]])
-    return api.get<SWAPIPaginatedResponse<Person>>(`/people?${searchParams}`)
+    return api.get<SWAPIPaginatedResponse<Person>>(
+      `/people?${searchParams}&search=${search}`
+    )
   })
 
   return {

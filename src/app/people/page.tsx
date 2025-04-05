@@ -1,5 +1,6 @@
 'use client'
 
+import { useDebounce } from '@/hooks/use-debounce'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
 import { getPeople } from '@/services/swapi/people'
 import {
@@ -10,17 +11,23 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { ChangeEvent, useState } from 'react'
 import { PersonRow } from './row'
 
 export default function Page() {
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 300)
+
   const query = useInfiniteQuery({
-    queryKey: ['personagens'],
+    queryKey: ['people', debouncedSearch],
+    staleTime: 1000 * 60 * 10, // 10 minutes
     async queryFn({ pageParam }) {
-      return getPeople(pageParam)
+      return getPeople(pageParam, debouncedSearch)
     },
     initialPageParam: 1,
     getNextPageParam(lastPage) {
@@ -33,12 +40,28 @@ export default function Page() {
     !query.isFetching && query.hasNextPage
   )
 
+  function handleChangeSearch(e: ChangeEvent<HTMLInputElement>) {
+    setSearch(e.target.value)
+  }
+
   return (
     <div className="flex flex-col">
-      <Typography variant="h1" color="primary">
-        Characters
-      </Typography>
-      <Paper className="flex flex-col items-center mt-[20px]">
+      <div className="flex flex-col sm:flex-row justify-between">
+        <Typography variant="h1" color="primary">
+          Characters
+        </Typography>
+
+        <TextField
+          variant="outlined"
+          label="Search"
+          className="w-[400px] bg-white self-end"
+          size="small"
+          value={search}
+          onChange={handleChangeSearch}
+        />
+      </div>
+
+      <Paper className="flex flex-col items-center mt-[10px]">
         <TableContainer>
           <Table>
             <TableHead>

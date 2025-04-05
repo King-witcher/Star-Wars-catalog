@@ -1,16 +1,19 @@
+'use client'
+
 import { Person } from '@/types/person'
 import { stripId } from '@/utils/swapi'
 import { TableCell } from '@mui/material'
 import type { TableRowProps } from '@mui/material/TableRow'
 import TableRow from '@mui/material/TableRow'
 import { useRouter } from 'next/navigation'
+import { memo } from 'react'
 import { formatHeight, formatMass } from './helpers'
 
 interface Props extends TableRowProps {
   person: Person
 }
 
-export function PersonRow({ person, ...rest }: Props) {
+export const PersonRow = memo(function PersonRow({ person, ...rest }: Props) {
   const router = useRouter()
   const id = stripId(person.url)
 
@@ -32,4 +35,4 @@ export function PersonRow({ person, ...rest }: Props) {
       <TableCell data-testid="mass">{formatMass(person.mass)}</TableCell>
     </TableRow>
   )
-}
+})
