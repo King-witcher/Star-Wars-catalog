@@ -1,6 +1,7 @@
 'use client'
 
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
+import { getPeople } from '@/services/swapi/people'
 import {
   CircularProgress,
   Table,
@@ -14,7 +15,6 @@ import {
 import Paper from '@mui/material/Paper'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { PersonRow } from './row'
-import { getPeople } from '@/services/swapi/people'
 
 export default function Page() {
   const query = useInfiniteQuery({
