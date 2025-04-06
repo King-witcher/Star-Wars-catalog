@@ -18,6 +18,11 @@ import { starshipColumns } from './starship-columns'
 import { vehicleColumns } from './vehicle-columns'
 import { Species } from '@/types/species'
 import { speciesColumns } from './species-columns'
+import { Planet } from '@/types/planet'
+import { useQuery } from '@tanstack/react-query'
+import { CircularProgress } from '@mui/material'
+import Link from 'next/link'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 
 interface Props {
   person: Person
@@ -25,6 +30,7 @@ interface Props {
   films: Promise<Film[]>
   starships: Promise<Starship[]>
   species: Promise<Species[]>
+  homeWorld: Promise<Planet>
 }
 
 export function ClientComponent({
@@ -33,6 +39,7 @@ export function ClientComponent({
   films,
   starships,
   species,
+  homeWorld,
 }: Props) {
   const { isFavoriteById, setFavorite, unfavorite } = useFavorites()
   const id = stripId(person.url)
@@ -42,6 +49,11 @@ export function ClientComponent({
     if (isFavorite) unfavorite('people', id)
     else setFavorite('people', id, person.name)
   }
+
+  const homeWorldQuery = useQuery({
+    queryKey: ['planet', stripId(person.homeworld)],
+    queryFn: () => homeWorld,
+  })
 
   return (
     <div>
@@ -53,8 +65,8 @@ export function ClientComponent({
             <FavoriteBorderIcon fontSize="large" />
           )}
         </IconButton>
-        <Typography variant="h2" color="primary">
-          {person.name}
+        <Typography variant="h3" color="primary">
+          {person.name} (character)
         </Typography>
       </div>
       <div className="flex flex-col sm:flex-row gap-[20px]">
@@ -71,8 +83,22 @@ export function ClientComponent({
               'Hair Color': person.hair_color,
               'Skin Color': person.skin_color,
               Height: formatPersonHeight(person.height),
-              // Homeworld?
-              // Species?
+              'Home World': homeWorldQuery.isLoading ? (
+                <CircularProgress size="1em" />
+              ) : (
+                <div className="flex items-center justify-end gap-[10px]">
+                  <Link
+                    href={
+                      homeWorldQuery.data
+                        ? `/planets/${stripId(homeWorldQuery.data.url)}`
+                        : ''
+                    }
+                    className="absolute inset-0"
+                  />
+                  {homeWorldQuery.data?.name || 'unknown'}
+                  <OpenInNewIcon fontSize="small" />
+                </div>
+              ),
             }}
           />
           <DetailsTable

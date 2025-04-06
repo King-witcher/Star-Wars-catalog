@@ -5,11 +5,11 @@ import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import type { TableContainerProps } from '@mui/material/TableContainer'
-import { useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { AttributeRow } from './attribute-row'
 
 interface Props extends TableContainerProps {
-  attributes: Record<string, string>
+  attributes: Record<string, ReactNode>
 }
 
 export function AttributesTable({ attributes, ...props }: Props) {

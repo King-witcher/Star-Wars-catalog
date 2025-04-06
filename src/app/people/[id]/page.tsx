@@ -7,6 +7,7 @@ import { AxiosError } from 'axios'
 import { notFound } from 'next/navigation'
 import { ClientComponent } from './client-component'
 import { getSpecies } from '@/services/species'
+import { getPlanet } from '@/services/planets'
 
 interface Props {
   params: Promise<{
@@ -51,6 +52,8 @@ export default async function Page({ params }: Props) {
     })
   )
 
+  const homeWorld = getPlanet(stripId(person.homeworld))
+
   return (
     <ClientComponent
       person={person}
@@ -58,6 +61,7 @@ export default async function Page({ params }: Props) {
       films={films}
       starships={starships}
       species={species}
+      homeWorld={homeWorld}
     />
   )
 }

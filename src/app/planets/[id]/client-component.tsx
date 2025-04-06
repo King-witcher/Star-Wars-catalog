@@ -46,8 +46,8 @@ export function ClientComponent({ planet, residents, films }: Props) {
             <FavoriteBorderIcon fontSize="large" />
           )}
         </IconButton>
-        <Typography variant="h2" color="primary">
-          {planet.name}
+        <Typography variant="h3" color="primary">
+          {planet.name} (planet)
         </Typography>
       </div>
       <div className="flex flex-col sm:flex-row gap-[20px]">
