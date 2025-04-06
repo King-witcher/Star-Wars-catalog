@@ -1,6 +1,7 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
+import { Table } from '@/components/table/table'
 import { useFavorites } from '@/contexts/favorites'
 import { Person } from '@/types/person'
 import { Planet } from '@/types/planet'
@@ -15,16 +16,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
-import { ResidentRow } from './resident-row'
+import { residentColumns } from './resident-columns'
 
 interface Props {
   planet: Planet
@@ -42,7 +36,7 @@ export function ClientComponent({ planet, residents }: Props) {
   }
 
   const residentsQuery = useQuery({
-    queryKey: ['residents', planet.url],
+    queryKey: ['residents-by-planet', id],
     queryFn: async () => residents,
   })
 
@@ -99,22 +93,15 @@ export function ClientComponent({ planet, residents }: Props) {
             </Typography>
           )}
           {Boolean(residentsQuery.data?.length) && (
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Resident</TableCell>
-                    <TableCell>Gender</TableCell>
-                    <TableCell />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {residentsQuery.data?.map((resident) => (
-                    <ResidentRow key={resident.url} resident={resident} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <Table
+              columns={residentColumns}
+              rowProps={{
+                hover: true,
+                className: 'cursor-pointer relative',
+              }}
+              data={residentsQuery.data || []}
+              getKey={(data) => data.url}
+            />
           )}
         </div>
       </div>

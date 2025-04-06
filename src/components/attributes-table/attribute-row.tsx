@@ -11,7 +11,6 @@ export const AttributeRow = memo(function AttributeRow({ name, value }: Props) {
   return (
     <TableRow
       data-unknown={value === 'unknown'}
-      hover
       className="data-[unknown=true]:opacity-50"
     >
       <TableCell>{name}</TableCell>
