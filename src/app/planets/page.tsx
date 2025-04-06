@@ -3,7 +3,7 @@
 import { Table } from '@/components/table/table'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
-import { getPlanets } from '@/services/swapi/planets'
+import { getPlanets } from '@/services/planets'
 import CircularProgress from '@mui/material/CircularProgress'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'

@@ -3,7 +3,7 @@
 import { Table } from '@/components/table/table'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
-import { getPeople } from '@/services/swapi/people'
+import { getPeople } from '@/services/people'
 import CircularProgress from '@mui/material/CircularProgress'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'

@@ -92,6 +92,7 @@ export function ClientComponent({ planet, residents, films }: Props) {
             emptyFallback="This planet has no known residents."
             rowProps={{
               className: 'relative',
+              hover: true,
             }}
           />
         </div>
