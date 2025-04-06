@@ -34,7 +34,7 @@ describe('people', () => {
     vi.clearAllMocks()
   })
 
-  describe('getPeople', () => {
+  describe(getPeople, () => {
     it('properly returns the next page', async () => {
       const next = faker.number.int()
 
@@ -67,7 +67,7 @@ describe('people', () => {
     })
   })
 
-  describe('getPerson', () => {
+  describe(getPerson, () => {
     it('returns a person', async () => {
       ;(<Mock>axios.get).mockResolvedValue({ data: person })
       const result = await getPerson(666)

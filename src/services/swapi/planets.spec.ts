@@ -66,7 +66,7 @@ describe('planets', () => {
   })
 
   describe(getPlanet, () => {
-    it('returns a person', async () => {
+    it('returns a planet', async () => {
       const id = faker.number.int()
       ;(<Mock>axios.get).mockResolvedValue({ data: planet })
       const result = await getPlanet(id)
