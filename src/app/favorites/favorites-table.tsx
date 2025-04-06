@@ -36,31 +36,33 @@ export function FavoritesTable({ collection, ...props }: Props) {
     )
 
   return (
-    <TableContainer className="mt-[20px]" component={Paper} {...props}>
-      <Table>
-        <TableBody>
-          {favorites.map((favorite) => (
-            <TableRow key={favorite.id} hover className="relative">
-              <TableCell>
-                <Link
-                  href={`/${collection}/${favorite.id}`}
-                  className="absolute inset-0"
-                />
-                <Typography fontWeight={500}>{favorite.name}</Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Tooltip title="Remove">
-                  <IconButton
-                    onClick={() => unfavorite(collection, favorite.id)}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper className="mt-[20px]">
+      <TableContainer {...props}>
+        <Table>
+          <TableBody>
+            {favorites.map((favorite) => (
+              <TableRow key={favorite.id} hover className="relative">
+                <TableCell>
+                  <Link
+                    href={`/${collection}/${favorite.id}`}
+                    className="absolute inset-0"
+                  />
+                  <Typography fontWeight={500}>{favorite.name}</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Tooltip title="Remove">
+                    <IconButton
+                      onClick={() => unfavorite(collection, favorite.id)}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   )
 }

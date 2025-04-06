@@ -1,23 +1,15 @@
 'use client'
 
+import { Table } from '@/components/table/table'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
 import { getPeople } from '@/services/swapi/people'
-import {
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material'
-import Paper from '@mui/material/Paper'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import CircularProgress from '@mui/material/CircularProgress'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import { ChangeEvent, useState } from 'react'
-import { PersonRow } from './row'
+import { columnDefs } from './columns'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 export default function Page() {
   const [search, setSearch] = useState('')
@@ -43,6 +35,8 @@ export default function Page() {
     setSearch(e.target.value)
   }
 
+  const data = query.data?.pages.flatMap((page) => page.results) ?? []
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col sm:flex-row justify-between">
@@ -61,41 +55,16 @@ export default function Page() {
       </div>
 
       <div className="flex-1 relative">
-        <Paper className="flex absolute inset-0 flex-col items-center mt-[10px] max-h-screen overflow-hidden">
-          <TableContainer>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Character</TableCell>
-                  <TableCell>Gender</TableCell>
-                  <TableCell>Hair Color</TableCell>
-                  <TableCell>Eye Color</TableCell>
-                  <TableCell>Height</TableCell>
-                  <TableCell>Mass</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {query.data?.pages.map((page, pageIndex) =>
-                  page.results.map((person, personIndex) => {
-                    const isLast =
-                      pageIndex === query.data.pages.length - 1 &&
-                      personIndex === page.results.length - 1
-
-                    return (
-                      <PersonRow
-                        person={person}
-                        key={person.url}
-                        ref={isLast ? lastElementRef : null}
-                      />
-                    )
-                  })
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
+        <Table
+          columns={columnDefs}
+          className="flex absolute inset-0 flex-col items-center mt-[10px] max-h-screen overflow-hidden"
+          data={data}
+          getKey={(data) => data.url}
+          rowProps={{ hover: true, className: 'relative cursor-pointer' }}
+          lastRowRef={lastElementRef}
+        >
           {query.isFetching && (
-            <div className="p-[20px]">
+            <div className="p-[20px] flex justify-center w-full">
               <CircularProgress />
             </div>
           )}
@@ -103,7 +72,7 @@ export default function Page() {
           {query.isError && (
             <Typography color="error">Failed to load people :(</Typography>
           )}
-        </Paper>
+        </Table>
       </div>
     </div>
   )
