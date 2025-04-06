@@ -19,13 +19,16 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
 import { residentColumns } from './resident-columns'
+import { Film } from '@/types/film'
+import { filmColumns } from './film-columns'
 
 interface Props {
   planet: Planet
   residents: Promise<Person[]>
+  films: Promise<Film[]>
 }
 
-export function ClientComponent({ planet, residents }: Props) {
+export function ClientComponent({ planet, residents, films }: Props) {
   const { isFavoriteById, setFavorite, unfavorite } = useFavorites()
   const id = stripId(planet.url)
   const isFavorite = isFavoriteById('planets', id)
@@ -38,6 +41,11 @@ export function ClientComponent({ planet, residents }: Props) {
   const residentsQuery = useQuery({
     queryKey: ['residents-by-planet', id],
     queryFn: async () => residents,
+  })
+
+  const filmsQuery = useQuery({
+    queryKey: ['films-by-person', id],
+    queryFn: async () => films,
   })
 
   return (
@@ -54,14 +62,13 @@ export function ClientComponent({ planet, residents }: Props) {
           {planet.name}
         </Typography>
       </div>
-      <div className="flex gap-[20px]">
-        <div className="flex-1">
+      <div className="flex flex-col sm:flex-row gap-[20px]">
+        <div className="flex flex-col flex-1 gap-[20px]">
           <Typography className="!mt-[20px]" variant="h5">
             Attributes
           </Typography>
 
           <AttributesTable
-            className="mt-[20px]"
             attributes={{
               'Rotation Period': formatRotationPeriod(planet.rotation_period),
               'Orbital Period': formatOrbitalPeriod(planet.orbital_period),
@@ -76,6 +83,27 @@ export function ClientComponent({ planet, residents }: Props) {
               Climate: planet.climate,
             }}
           />
+          <Typography className="!mt-[20px]" variant="h5">
+            Films
+          </Typography>
+          {filmsQuery.isLoading && (
+            <div className=" flex items-center justify-center">
+              <CircularProgress size="80px" />
+            </div>
+          )}
+
+          {filmsQuery.data?.length === 0 && (
+            <Typography color="textSecondary">
+              No films found for this character.
+            </Typography>
+          )}
+          {Boolean(filmsQuery.data?.length) && (
+            <Table
+              columns={filmColumns}
+              data={filmsQuery.data || []}
+              getKey={(data) => data.url}
+            />
+          )}
         </div>
         <div className="flex flex-col flex-1 gap-[20px]">
           <Typography className="!mt-[20px]" variant="h5">

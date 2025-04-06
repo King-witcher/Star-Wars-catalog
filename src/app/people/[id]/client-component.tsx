@@ -14,7 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
-import { filmColumns } from './flms-columns'
+import { filmColumns } from './film-columns'
 import { vehicleColumns } from './vehicle-columns'
 
 interface Props {
@@ -58,12 +58,11 @@ export function ClientComponent({ person, vehicles, films }: Props) {
         </Typography>
       </div>
       <div className="flex gap-[20px]">
-        <div className="flex-1">
+        <div className="flex flex-col flex-1 gap-[20px]">
           <Typography className="!mt-[20px]" variant="h5">
             Attributes
           </Typography>
           <AttributesTable
-            className="mt-[20px]"
             attributes={{
               Gender: person.gender,
               Mass: formatMass(person.mass),
@@ -103,7 +102,7 @@ export function ClientComponent({ person, vehicles, films }: Props) {
           <Typography className="!mt-[20px]" variant="h5">
             Films
           </Typography>
-          {vehiclesQuery.isLoading && (
+          {filmsQuery.isLoading && (
             <div className=" flex items-center justify-center">
               <CircularProgress size="80px" />
             </div>

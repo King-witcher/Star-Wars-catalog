@@ -26,7 +26,7 @@ export function AttributesTable({ attributes, ...props }: Props) {
   )
 
   return (
-    <TableContainer className="mt-[20px]" component={Paper} {...props}>
+    <TableContainer component={Paper} {...props}>
       <Table>
         <TableBody>
           {pairs.map(([key, value]) => (

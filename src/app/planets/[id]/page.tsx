@@ -4,6 +4,7 @@ import { stripId } from '@/utils/swapi'
 import { AxiosError } from 'axios'
 import { notFound } from 'next/navigation'
 import { ClientComponent } from './client-component'
+import { getFilm } from '@/services/swapi/films'
 
 interface Props {
   params: Promise<{
@@ -27,5 +28,12 @@ export default async function Page({ params }: Props) {
     })
   )
 
-  return <ClientComponent planet={planet} residents={residents} />
+  const films = Promise.all(
+    planet.films.map((filmUrl) => {
+      const id = stripId(filmUrl)
+      return getFilm(id)
+    })
+  )
+
+  return <ClientComponent planet={planet} residents={residents} films={films} />
 }
