@@ -6,6 +6,7 @@ import { stripId } from '@/utils/swapi'
 import { AxiosError } from 'axios'
 import { notFound } from 'next/navigation'
 import { ClientComponent } from './client-component'
+import { getSpecies } from '@/services/species'
 
 interface Props {
   params: Promise<{
@@ -43,12 +44,20 @@ export default async function Page({ params }: Props) {
     })
   )
 
+  const species = Promise.all(
+    person.species.map((species) => {
+      const id = stripId(species)
+      return getSpecies(id)
+    })
+  )
+
   return (
     <ClientComponent
       person={person}
       vehicles={vehicles}
       films={films}
       starships={starships}
+      species={species}
     />
   )
 }

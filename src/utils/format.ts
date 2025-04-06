@@ -62,3 +62,12 @@ export function formatRotationPeriod(value: string): string {
   const period = Number(value)
   return `${period.toLocaleString('en-US')}h`
 }
+
+/** Formats a lifespan.
+ * @param value - The period in years.
+ */
+export function formatLifespan(value: string): string {
+  if (value === 'unknown') return 'unknown'
+  const period = Number(value)
+  return `${period.toLocaleString('en-US')} years`
+}

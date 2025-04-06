@@ -1,5 +1,6 @@
 import {
   formatLength,
+  formatLifespan,
   formatMass,
   formatOrbitalPeriod,
   formatPersonHeight,
@@ -97,5 +98,17 @@ describe(formatOrbitalPeriod, () => {
   it('should return string separated with commas', () => {
     const result = formatOrbitalPeriod('123456')
     expect(result).toBe('123,456 days')
+  })
+})
+
+describe(formatLifespan, () => {
+  it('should return unknown when the lifespan is unknown', () => {
+    const result = formatLifespan('unknown')
+    expect(result).toBe('unknown')
+  })
+
+  it('should return string separated with commas', () => {
+    const result = formatLifespan('123456')
+    expect(result).toBe('123,456 years')
   })
 })

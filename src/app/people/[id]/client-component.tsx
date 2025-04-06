@@ -16,15 +16,24 @@ import Typography from '@mui/material/Typography'
 import { filmColumns } from './film-columns'
 import { starshipColumns } from './starship-columns'
 import { vehicleColumns } from './vehicle-columns'
+import { Species } from '@/types/species'
+import { speciesColumns } from './species-columns'
 
 interface Props {
   person: Person
   vehicles: Promise<Vehicle[]>
   films: Promise<Film[]>
   starships: Promise<Starship[]>
+  species: Promise<Species[]>
 }
 
-export function ClientComponent({ person, vehicles, films, starships }: Props) {
+export function ClientComponent({
+  person,
+  vehicles,
+  films,
+  starships,
+  species,
+}: Props) {
   const { isFavoriteById, setFavorite, unfavorite } = useFavorites()
   const id = stripId(person.url)
   const isFavorite = isFavoriteById('people', id)
@@ -48,7 +57,7 @@ export function ClientComponent({ person, vehicles, films, starships }: Props) {
           {person.name}
         </Typography>
       </div>
-      <div className="flex gap-[20px]">
+      <div className="flex flex-col sm:flex-row gap-[20px]">
         <div className="flex flex-col flex-1 gap-[20px]">
           <Typography className="!mt-[20px]" variant="h5">
             Attributes
@@ -91,6 +100,14 @@ export function ClientComponent({ person, vehicles, films, starships }: Props) {
             getKey={(data) => data.url}
             queryKey={['films-by-person', id]}
             emptyFallback="No films found for this character."
+          />
+          <DetailsTable
+            title="Species"
+            data={species}
+            columns={speciesColumns}
+            getKey={(data) => data.url}
+            queryKey={['species-by-person', id]}
+            emptyFallback="No species found for this character."
           />
         </div>
       </div>
