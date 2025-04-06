@@ -1,6 +1,7 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
+import { Table } from '@/components/table/table'
 import { useFavorites } from '@/contexts/favorites'
 import { Film } from '@/types/film'
 import { Person } from '@/types/person'
@@ -11,17 +12,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
-import { FilmRow } from './film-row'
-import { VehicleRow } from './vehicle-row'
+import { filmColumns } from './flms-columns'
+import { vehicleColumns } from './vehicle-columns'
 
 interface Props {
   person: Person
@@ -100,22 +94,11 @@ export function ClientComponent({ person, vehicles, films }: Props) {
             </Typography>
           )}
           {Boolean(vehiclesQuery.data?.length) && (
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Vehicle</TableCell>
-                    <TableCell>Model</TableCell>
-                    <TableCell align="right">Manufacturer</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {vehiclesQuery.data?.map((vehicle) => (
-                    <VehicleRow key={vehicle.url} vehicle={vehicle} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <Table
+              columns={vehicleColumns}
+              data={vehiclesQuery.data || []}
+              getKey={(data) => data.url}
+            />
           )}
           <Typography className="!mt-[20px]" variant="h5">
             Films
@@ -126,28 +109,17 @@ export function ClientComponent({ person, vehicles, films }: Props) {
             </div>
           )}
 
-          {vehiclesQuery.data?.length === 0 && (
+          {filmsQuery.data?.length === 0 && (
             <Typography color="textSecondary">
               No films found for this character.
             </Typography>
           )}
           {Boolean(filmsQuery.data?.length) && (
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Vehicle</TableCell>
-                    <TableCell>Model</TableCell>
-                    <TableCell align="right">Manufacturer</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filmsQuery.data?.map((film) => (
-                    <FilmRow key={film.url} film={film} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <Table
+              columns={filmColumns}
+              data={filmsQuery.data || []}
+              getKey={(data) => data.url}
+            />
           )}
         </div>
       </div>
