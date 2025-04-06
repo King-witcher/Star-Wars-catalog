@@ -34,12 +34,12 @@ export function ClientComponent({ person, vehicles, films }: Props) {
   }
 
   const vehiclesQuery = useQuery({
-    queryKey: ['vehicles', person.url],
+    queryKey: ['vehicles-by-person', id],
     queryFn: async () => vehicles,
   })
 
   const filmsQuery = useQuery({
-    queryKey: ['films', person.url],
+    queryKey: ['films-by-person', id],
     queryFn: async () => films,
   })
 
