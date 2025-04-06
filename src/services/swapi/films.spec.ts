@@ -34,7 +34,7 @@ describe(getFilm, () => {
     const id = faker.number.int()
     const result = await getFilm(id)
 
-    expect(result).toBe(film)
+    expect(result).toEqual(film)
     expect(axios.get).toHaveBeenCalledWith(`/films/${id}`)
   })
 })

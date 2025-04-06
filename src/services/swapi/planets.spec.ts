@@ -72,7 +72,7 @@ describe('planets', () => {
       const result = await getPlanet(id)
 
       expect(axios.get).toHaveBeenCalledWith(`/planets/${id}`)
-      expect(result).toBe(planet)
+      expect(result).toEqual(planet)
     })
   })
 })

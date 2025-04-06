@@ -48,7 +48,7 @@ describe('people', () => {
 
       const result = await getPeople(faker.number.int(), '')
 
-      expect(result.next).toBe(next)
+      expect(result.next).toEqual(next)
     })
 
     it('returns null on next page when this is the last page', async () => {
@@ -72,7 +72,7 @@ describe('people', () => {
       ;(<Mock>axios.get).mockResolvedValue({ data: person })
       const result = await getPerson(666)
 
-      expect(result).toBe(person)
+      expect(result).toEqual(person)
       expect(axios.get).toHaveBeenCalledWith('/people/666')
     })
   })

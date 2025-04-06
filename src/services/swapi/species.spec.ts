@@ -1,10 +1,10 @@
-import _starship from '@/fixtures/starship.json'
-import { Starship } from '@/types/starship'
+import _species from '@/fixtures/film.json'
+import { Species } from '@/types/species'
 import { faker } from '@faker-js/faker'
 import axios from 'axios'
 import { Mock } from 'vitest'
-import { getStarship } from './starships'
-const starship = _starship as unknown as Starship
+import { getSpecies } from './species'
+const species = _species as unknown as Species
 
 vi.mock('axios', () => {
   return {
@@ -28,13 +28,13 @@ vi.mock('axios', () => {
   }
 })
 
-describe(getStarship, () => {
-  it('returns a starship', async () => {
-    ;(<Mock>axios.get).mockResolvedValue({ data: starship })
+describe(getSpecies, () => {
+  it('should return a species', async () => {
+    ;(<Mock>axios.get).mockResolvedValue({ data: species })
     const id = faker.number.int()
-    const result = await getStarship(id)
+    const result = await getSpecies(id)
 
-    expect(result).toEqual(starship)
-    expect(axios.get).toHaveBeenCalledWith(`/starships/${id}`)
+    expect(result).toEqual(species)
+    expect(axios.get).toHaveBeenCalledWith(`/species/${id}`)
   })
 })
