@@ -1,7 +1,7 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
-import { Table } from '@/components/table/table'
+import { DetailsTable } from '@/components/details-table/details-table'
 import { useFavorites } from '@/contexts/favorites'
 import { Film } from '@/types/film'
 import { Person } from '@/types/person'
@@ -15,10 +15,8 @@ import {
 import { stripId } from '@/utils/swapi'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { useQuery } from '@tanstack/react-query'
 import { filmColumns } from './film-columns'
 import { residentColumns } from './resident-columns'
 
@@ -37,16 +35,6 @@ export function ClientComponent({ planet, residents, films }: Props) {
     if (isFavorite) unfavorite('planets', id)
     else setFavorite('planets', id, planet.name)
   }
-
-  const residentsQuery = useQuery({
-    queryKey: ['residents-by-planet', id],
-    queryFn: async () => residents,
-  })
-
-  const filmsQuery = useQuery({
-    queryKey: ['films-by-person', id],
-    queryFn: async () => films,
-  })
 
   return (
     <div>
@@ -83,54 +71,29 @@ export function ClientComponent({ planet, residents, films }: Props) {
               Climate: planet.climate,
             }}
           />
-          <Typography className="!mt-[20px]" variant="h5">
-            Films
-          </Typography>
-          {filmsQuery.isLoading && (
-            <div className=" flex items-center justify-center">
-              <CircularProgress size="80px" />
-            </div>
-          )}
 
-          {filmsQuery.data?.length === 0 && (
-            <Typography color="textSecondary">
-              No films found for this character.
-            </Typography>
-          )}
-          {Boolean(filmsQuery.data?.length) && (
-            <Table
-              columns={filmColumns}
-              data={filmsQuery.data || []}
-              getKey={(data) => data.url}
-            />
-          )}
+          <DetailsTable
+            title="Films"
+            data={films}
+            columns={filmColumns}
+            getKey={(data) => data.url}
+            queryKey={['films-by-planet', id]}
+            emptyFallback="No films found for this planet."
+          />
         </div>
-        <div className="flex flex-col flex-1 gap-[20px]">
-          <Typography className="!mt-[20px]" variant="h5">
-            Residents
-          </Typography>
-          {residentsQuery.isLoading && (
-            <div className=" flex items-center justify-center">
-              <CircularProgress size="80px" />
-            </div>
-          )}
 
-          {residentsQuery.data?.length === 0 && (
-            <Typography color="textSecondary">
-              This planet has no known residents.
-            </Typography>
-          )}
-          {Boolean(residentsQuery.data?.length) && (
-            <Table
-              columns={residentColumns}
-              rowProps={{
-                hover: true,
-                className: 'cursor-pointer relative',
-              }}
-              data={residentsQuery.data || []}
-              getKey={(data) => data.url}
-            />
-          )}
+        <div className="flex flex-col flex-1 gap-[20px]">
+          <DetailsTable
+            title="Residents"
+            data={residents}
+            columns={residentColumns}
+            getKey={(data) => data.url}
+            queryKey={['residents-by-planet', id]}
+            emptyFallback="This planet has no known residents."
+            rowProps={{
+              className: 'relative',
+            }}
+          />
         </div>
       </div>
     </div>

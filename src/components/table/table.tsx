@@ -1,7 +1,7 @@
 'use client'
 
 import Paper, { PaperProps } from '@mui/material/Paper'
-import MUITable, { TableProps } from '@mui/material/Table'
+import MUITable, { TableProps as MUITableProps } from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell, { TableCellProps } from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
@@ -19,13 +19,13 @@ export type ColumnDefinition<TData> = {
   cellProps?: TableCellProps
 }
 
-interface Props<TData> extends PaperProps {
+export interface TableProps<TData> extends PaperProps {
   data: TData[]
   getKey: (row: TData) => Key
   columns: ColumnDefinition<TData>[]
   rowProps?: TableRowProps
   lastRowRef?: Ref<HTMLTableRowElement>
-  tableProps?: Omit<TableProps, 'children'>
+  tableProps?: Omit<MUITableProps, 'children'>
 }
 
 export function Table<TData>({
@@ -38,7 +38,7 @@ export function Table<TData>({
   children,
   className,
   ...paperProps
-}: Props<TData>) {
+}: TableProps<TData>) {
   return (
     <Paper className={twMerge('overflow-hidden', className)} {...paperProps}>
       <TableContainer>

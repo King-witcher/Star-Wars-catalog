@@ -1,11 +1,10 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
-import { ColumnDefinition, Table } from '../table/table'
+import { Table, TableProps } from '../table/table'
 
-interface Props<TData> {
+interface Props<TData> extends Omit<TableProps<TData>, 'data'> {
   data: Promise<TData[]>
-  columns: ColumnDefinition<TData>[]
   getKey: (row: TData) => string | number
   queryKey: (string | number)[]
   title: string
@@ -14,11 +13,10 @@ interface Props<TData> {
 
 export function DetailsTable<TData>({
   data,
-  columns,
   queryKey,
-  getKey,
   title,
   emptyFallback,
+  ...tableProps
 }: Props<TData>) {
   const query = useQuery({
     queryKey,
@@ -38,7 +36,7 @@ export function DetailsTable<TData>({
       )}
 
       {Boolean(query.data?.length) && (
-        <Table data={query.data || []} columns={columns} getKey={getKey} />
+        <Table data={query.data || []} {...tableProps} />
       )}
 
       {query.data?.length === 0 && (
