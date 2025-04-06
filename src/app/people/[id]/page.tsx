@@ -1,3 +1,4 @@
+import { getFilm } from '@/services/swapi/films'
 import { getPerson } from '@/services/swapi/people'
 import { getVehicle } from '@/services/swapi/vehicles'
 import { stripId } from '@/utils/swapi'
@@ -27,5 +28,12 @@ export default async function Page({ params }: Props) {
     })
   )
 
-  return <ClientComponent person={person} vehicles={vehicles} />
+  const films = Promise.all(
+    person.films.map((film) => {
+      const id = stripId(film)
+      return getFilm(id)
+    })
+  )
+
+  return <ClientComponent person={person} vehicles={vehicles} films={films} />
 }

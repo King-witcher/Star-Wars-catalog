@@ -1,9 +1,9 @@
-import axios from 'axios'
-import { Mock } from 'vitest'
 import _film from '@/fixtures/film.json'
 import { Film } from '@/types/film'
-import { getFilm } from './films'
 import { faker } from '@faker-js/faker'
+import axios from 'axios'
+import { Mock } from 'vitest'
+import { getFilm } from './films'
 const film = _film as unknown as Film
 
 vi.mock('axios', () => {

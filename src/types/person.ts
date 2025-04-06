@@ -10,7 +10,7 @@ export interface Person extends BaseEntity {
   birth_year: string
   gender: 'male' | 'female' | 'n/a' | 'hermaphrodite' | 'none'
   homeworld: string
-  filmes: string[]
+  films: string[]
   species: string[]
   vehicles: string[]
   starships: string[]

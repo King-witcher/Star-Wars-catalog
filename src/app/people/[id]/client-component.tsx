@@ -2,6 +2,7 @@
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
 import { useFavorites } from '@/contexts/favorites'
+import { Film } from '@/types/film'
 import { Person } from '@/types/person'
 import { Vehicle } from '@/types/vehicle'
 import { formatMass, formatPersonHeight } from '@/utils/format'
@@ -19,14 +20,16 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
+import { FilmRow } from './film-row'
 import { VehicleRow } from './vehicle-row'
 
 interface Props {
   person: Person
   vehicles: Promise<Vehicle[]>
+  films: Promise<Film[]>
 }
 
-export function ClientComponent({ person, vehicles }: Props) {
+export function ClientComponent({ person, vehicles, films }: Props) {
   const { isFavoriteById, setFavorite, unfavorite } = useFavorites()
   const id = stripId(person.url)
   const isFavorite = isFavoriteById('people', id)
@@ -39,6 +42,11 @@ export function ClientComponent({ person, vehicles }: Props) {
   const vehiclesQuery = useQuery({
     queryKey: ['vehicles', person.url],
     queryFn: async () => vehicles,
+  })
+
+  const filmsQuery = useQuery({
+    queryKey: ['films', person.url],
+    queryFn: async () => films,
   })
 
   return (
@@ -72,7 +80,6 @@ export function ClientComponent({ person, vehicles }: Props) {
               Height: formatPersonHeight(person.height),
               // Homeworld?
               // Starships?
-              // Films?
               // Species?
             }}
           />
@@ -105,6 +112,38 @@ export function ClientComponent({ person, vehicles }: Props) {
                 <TableBody>
                   {vehiclesQuery.data?.map((vehicle) => (
                     <VehicleRow key={vehicle.url} vehicle={vehicle} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+          <Typography className="!mt-[20px]" variant="h5">
+            Films
+          </Typography>
+          {vehiclesQuery.isLoading && (
+            <div className=" flex items-center justify-center">
+              <CircularProgress size="80px" />
+            </div>
+          )}
+
+          {vehiclesQuery.data?.length === 0 && (
+            <Typography color="textSecondary">
+              No films found for this character.
+            </Typography>
+          )}
+          {Boolean(filmsQuery.data?.length) && (
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Vehicle</TableCell>
+                    <TableCell>Model</TableCell>
+                    <TableCell align="right">Manufacturer</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filmsQuery.data?.map((film) => (
+                    <FilmRow key={film.url} film={film} />
                   ))}
                 </TableBody>
               </Table>
