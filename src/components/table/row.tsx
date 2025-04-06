@@ -8,7 +8,7 @@ interface Props<TData> extends TableRowProps {
   columns: ColumnDefinition<TData>[]
 }
 
-export function CustomRow<TData>({ data, columns, ...props }: Props<TData>) {
+export function Row<TData>({ data, columns, ...props }: Props<TData>) {
   return (
     <TableRow {...props}>
       {columns.map((columnm) => {

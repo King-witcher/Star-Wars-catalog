@@ -1,29 +1,30 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
-import { Table } from '@/components/table/table'
+import { DetailsTable } from '@/components/details-table/details-table'
 import { useFavorites } from '@/contexts/favorites'
 import { Film } from '@/types/film'
 import { Person } from '@/types/person'
+import { Starship } from '@/types/starship'
 import { Vehicle } from '@/types/vehicle'
 import { formatMass, formatPersonHeight } from '@/utils/format'
 import { stripId } from '@/utils/swapi'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { useQuery } from '@tanstack/react-query'
 import { filmColumns } from './film-columns'
+import { starshipColumns } from './starship-columns'
 import { vehicleColumns } from './vehicle-columns'
 
 interface Props {
   person: Person
   vehicles: Promise<Vehicle[]>
   films: Promise<Film[]>
+  starships: Promise<Starship[]>
 }
 
-export function ClientComponent({ person, vehicles, films }: Props) {
+export function ClientComponent({ person, vehicles, films, starships }: Props) {
   const { isFavoriteById, setFavorite, unfavorite } = useFavorites()
   const id = stripId(person.url)
   const isFavorite = isFavoriteById('people', id)
@@ -32,16 +33,6 @@ export function ClientComponent({ person, vehicles, films }: Props) {
     if (isFavorite) unfavorite('people', id)
     else setFavorite('people', id, person.name)
   }
-
-  const vehiclesQuery = useQuery({
-    queryKey: ['vehicles-by-person', id],
-    queryFn: async () => vehicles,
-  })
-
-  const filmsQuery = useQuery({
-    queryKey: ['films-by-person', id],
-    queryFn: async () => films,
-  })
 
   return (
     <div>
@@ -72,54 +63,35 @@ export function ClientComponent({ person, vehicles, films }: Props) {
               'Skin Color': person.skin_color,
               Height: formatPersonHeight(person.height),
               // Homeworld?
-              // Starships?
               // Species?
             }}
           />
+          <DetailsTable
+            title="Starships"
+            data={starships}
+            columns={starshipColumns}
+            getKey={(data) => data.url}
+            queryKey={['starships-by-person', id]}
+            emptyFallback="No starships found for this character."
+          />
         </div>
         <div className="flex flex-col flex-1 gap-[20px]">
-          <Typography className="!mt-[20px]" variant="h5">
-            Vehicles
-          </Typography>
-          {vehiclesQuery.isLoading && (
-            <div className=" flex items-center justify-center">
-              <CircularProgress size="80px" />
-            </div>
-          )}
-
-          {vehiclesQuery.data?.length === 0 && (
-            <Typography color="textSecondary">
-              No vehicles found for this character.
-            </Typography>
-          )}
-          {Boolean(vehiclesQuery.data?.length) && (
-            <Table
-              columns={vehicleColumns}
-              data={vehiclesQuery.data || []}
-              getKey={(data) => data.url}
-            />
-          )}
-          <Typography className="!mt-[20px]" variant="h5">
-            Films
-          </Typography>
-          {filmsQuery.isLoading && (
-            <div className=" flex items-center justify-center">
-              <CircularProgress size="80px" />
-            </div>
-          )}
-
-          {filmsQuery.data?.length === 0 && (
-            <Typography color="textSecondary">
-              No films found for this character.
-            </Typography>
-          )}
-          {Boolean(filmsQuery.data?.length) && (
-            <Table
-              columns={filmColumns}
-              data={filmsQuery.data || []}
-              getKey={(data) => data.url}
-            />
-          )}
+          <DetailsTable
+            title="Vehicles"
+            data={vehicles}
+            columns={vehicleColumns}
+            getKey={(data) => data.url}
+            queryKey={['vehicles-by-person', id]}
+            emptyFallback="No vehicles found for this character."
+          />
+          <DetailsTable
+            title="Films"
+            data={films}
+            columns={filmColumns}
+            getKey={(data) => data.url}
+            queryKey={['films-by-person', id]}
+            emptyFallback="No films found for this character."
+          />
         </div>
       </div>
     </div>

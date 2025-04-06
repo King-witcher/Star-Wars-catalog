@@ -1,5 +1,6 @@
 import { getFilm } from '@/services/swapi/films'
 import { getPerson } from '@/services/swapi/people'
+import { getStarship } from '@/services/swapi/starships'
 import { getVehicle } from '@/services/swapi/vehicles'
 import { stripId } from '@/utils/swapi'
 import { AxiosError } from 'axios'
@@ -35,5 +36,19 @@ export default async function Page({ params }: Props) {
     })
   )
 
-  return <ClientComponent person={person} vehicles={vehicles} films={films} />
+  const starships = Promise.all(
+    person.starships.map((starship) => {
+      const id = stripId(starship)
+      return getStarship(id)
+    })
+  )
+
+  return (
+    <ClientComponent
+      person={person}
+      vehicles={vehicles}
+      films={films}
+      starships={starships}
+    />
+  )
 }

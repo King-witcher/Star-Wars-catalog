@@ -3,6 +3,7 @@
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
 import { Table } from '@/components/table/table'
 import { useFavorites } from '@/contexts/favorites'
+import { Film } from '@/types/film'
 import { Person } from '@/types/person'
 import { Planet } from '@/types/planet'
 import {
@@ -18,9 +19,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
-import { residentColumns } from './resident-columns'
-import { Film } from '@/types/film'
 import { filmColumns } from './film-columns'
+import { residentColumns } from './resident-columns'
 
 interface Props {
   planet: Planet

@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow, { TableRowProps } from '@mui/material/TableRow'
 import { FC, Key, ReactNode, Ref } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { CustomRow } from './custom-row'
+import { Row } from './row'
 
 export type ColumnDefinition<TData> = {
   key: Key
@@ -61,7 +61,7 @@ export function Table<TData>({
               const rowKey = getKey(row)
               const isLastRow = rowIndex === data.length - 1
               return (
-                <CustomRow
+                <Row
                   key={rowKey}
                   ref={isLastRow ? lastRowRef : undefined}
                   data={row}

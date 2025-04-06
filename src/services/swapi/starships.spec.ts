@@ -1,8 +1,8 @@
 import _starship from '@/fixtures/starship.json'
+import { Starship } from '@/types/starship'
 import { faker } from '@faker-js/faker'
 import axios from 'axios'
 import { Mock } from 'vitest'
-import { Starship } from '@/types/starship'
 import { getStarship } from './starships'
 const starship = _starship as unknown as Starship
 

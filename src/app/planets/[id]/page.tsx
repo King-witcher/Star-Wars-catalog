@@ -1,10 +1,10 @@
+import { getFilm } from '@/services/swapi/films'
 import { getPerson } from '@/services/swapi/people'
 import { getPlanet } from '@/services/swapi/planets'
 import { stripId } from '@/utils/swapi'
 import { AxiosError } from 'axios'
 import { notFound } from 'next/navigation'
 import { ClientComponent } from './client-component'
-import { getFilm } from '@/services/swapi/films'
 
 interface Props {
   params: Promise<{
