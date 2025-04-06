@@ -1,6 +1,6 @@
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
-import { memo, ReactNode } from 'react'
+import { ReactNode, memo } from 'react'
 
 interface Props {
   name: string

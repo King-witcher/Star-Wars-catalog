@@ -1,13 +1,13 @@
 import { getFilm } from '@/services/films'
 import { getPerson } from '@/services/people'
+import { getPlanet } from '@/services/planets'
+import { getSpecies } from '@/services/species'
 import { getStarship } from '@/services/starships'
 import { getVehicle } from '@/services/vehicles'
 import { stripId } from '@/utils/swapi'
 import { AxiosError } from 'axios'
 import { notFound } from 'next/navigation'
 import { ClientComponent } from './client-component'
-import { getSpecies } from '@/services/species'
-import { getPlanet } from '@/services/planets'
 
 interface Props {
   params: Promise<{
