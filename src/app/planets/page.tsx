@@ -1,23 +1,15 @@
 'use client'
 
+import { Table } from '@/components/table/table'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
 import { getPlanets } from '@/services/swapi/planets'
-import {
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material'
-import Paper from '@mui/material/Paper'
+import CircularProgress from '@mui/material/CircularProgress'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { ChangeEvent, useState } from 'react'
-import { PlanetRow } from './row'
+import { columnDefs } from './columns'
 
 export default function Page() {
   const [search, setSearch] = useState('')
@@ -34,6 +26,8 @@ export default function Page() {
       return lastPage.next
     },
   })
+
+  const data = query.data?.pages.flatMap((page) => page.results) ?? []
 
   const lastElementRef = useIntersectionObserver(
     query.fetchNextPage,
@@ -62,44 +56,24 @@ export default function Page() {
       </div>
 
       <div className="flex-1 relative">
-        <Paper className="absolute inset-0 flex flex-col items-center mt-[10px] max-h-screen overflow-hidden">
-          <TableContainer>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Planet</TableCell>
-                  <TableCell>Terrain</TableCell>
-                  <TableCell>Population</TableCell>
-                  <TableCell>Diameter</TableCell>
-                  <TableCell>Orbit</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {query.data?.pages.map((page, pageIndex) =>
-                  page.results.map((person, personIndex) => {
-                    const isLast =
-                      pageIndex === query.data.pages.length - 1 &&
-                      personIndex === page.results.length - 1
-
-                    return (
-                      <PlanetRow
-                        planet={person}
-                        key={person.url}
-                        ref={isLast ? lastElementRef : null}
-                      />
-                    )
-                  })
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
+        <Table
+          columns={columnDefs}
+          className="flex absolute inset-0 flex-col items-center mt-[10px] max-h-screen overflow-hidden"
+          data={data}
+          getKey={(data) => data.url}
+          rowProps={{ hover: true, className: 'relative cursor-pointer' }}
+          lastRowRef={lastElementRef}
+        >
           {query.isFetching && (
-            <div className="p-[20px]">
+            <div className="p-[20px] flex justify-center w-full">
               <CircularProgress />
             </div>
           )}
-        </Paper>
+
+          {query.isError && (
+            <Typography color="error">Failed to load planets :(</Typography>
+          )}
+        </Table>
       </div>
     </div>
   )

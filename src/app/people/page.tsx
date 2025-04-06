@@ -7,9 +7,9 @@ import { getPeople } from '@/services/swapi/people'
 import CircularProgress from '@mui/material/CircularProgress'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { ChangeEvent, useState } from 'react'
 import { columnDefs } from './columns'
-import { useInfiniteQuery } from '@tanstack/react-query'
 
 export default function Page() {
   const [search, setSearch] = useState('')
