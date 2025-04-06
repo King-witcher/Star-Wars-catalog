@@ -21,6 +21,20 @@ export function FavoritesTable({ collection, ...props }: Props) {
   const { getFavorites, unfavorite } = useFavorites()
   const favorites = getFavorites(collection)
 
+  if (favorites.length === 0)
+    return (
+      <>
+        <Typography className="!mt-[20px]" color="textSecondary">
+          You don't have favorite {collection} yet.
+        </Typography>
+        <Link href={`/${collection}`}>
+          <Typography className="!mt-[20px]" color="primary">
+            Explore {collection}!
+          </Typography>
+        </Link>
+      </>
+    )
+
   return (
     <TableContainer className="mt-[20px]" component={Paper} {...props}>
       <Table>
