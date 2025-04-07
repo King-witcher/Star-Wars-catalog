@@ -1,40 +1,30 @@
-import _species from '@/fixtures/film.json'
-import { Species } from '@/types/species'
+import _species from '@/fixtures/species.json'
 import { faker } from '@faker-js/faker'
-import axios from 'axios'
-import { Mock } from 'vitest'
+import { api } from './api'
+import { Species } from '@/types/species'
 import { getSpecies } from './species'
 const species = _species as unknown as Species
 
-vi.mock('axios', () => {
-  return {
-    default: {
-      post: vi.fn(),
-      get: vi.fn(),
-      delete: vi.fn(),
-      put: vi.fn(),
-      create: vi.fn().mockReturnThis(),
-      interceptors: {
-        request: {
-          use: vi.fn(),
-          eject: vi.fn(),
-        },
-        response: {
-          use: vi.fn(),
-          eject: vi.fn(),
-        },
-      },
-    },
-  }
-})
+vi.mock('./api')
 
 describe(getSpecies, () => {
-  it('should return a species', async () => {
-    ;(<Mock>axios.get).mockResolvedValue({ data: species })
+  afterEach(vi.clearAllMocks)
+
+  it('returns a film', async () => {
+    vi.mocked(api.get).mockResolvedValue({ data: species })
     const id = faker.number.int()
     const result = await getSpecies(id)
 
     expect(result).toEqual(species)
-    expect(axios.get).toHaveBeenCalledWith(`/species/${id}`)
+    expect(api.get).toHaveBeenCalledWith(`/species/${id}`)
+  })
+
+  it('throws an error if the API call fails', async () => {
+    const error = new Error('API error')
+    vi.mocked(api.get).mockRejectedValue(error)
+    const id = faker.number.int()
+
+    await expect(getSpecies(id)).rejects.toThrow(error)
+    expect(api.get).toHaveBeenCalledWith(`/species/${id}`)
   })
 })

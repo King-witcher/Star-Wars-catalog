@@ -1,40 +1,30 @@
 import _starship from '@/fixtures/starship.json'
-import { Starship } from '@/types/starship'
 import { faker } from '@faker-js/faker'
-import axios from 'axios'
-import { Mock } from 'vitest'
+import { api } from './api'
+import { Starship } from '@/types/starship'
 import { getStarship } from './starships'
 const starship = _starship as unknown as Starship
 
-vi.mock('axios', () => {
-  return {
-    default: {
-      post: vi.fn(),
-      get: vi.fn(),
-      delete: vi.fn(),
-      put: vi.fn(),
-      create: vi.fn().mockReturnThis(),
-      interceptors: {
-        request: {
-          use: vi.fn(),
-          eject: vi.fn(),
-        },
-        response: {
-          use: vi.fn(),
-          eject: vi.fn(),
-        },
-      },
-    },
-  }
-})
+vi.mock('./api')
 
 describe(getStarship, () => {
-  it('returns a starship', async () => {
-    ;(<Mock>axios.get).mockResolvedValue({ data: starship })
+  afterEach(vi.clearAllMocks)
+
+  it('should fetch and return the proper starship', async () => {
+    vi.mocked(api.get).mockResolvedValue({ data: starship })
     const id = faker.number.int()
     const result = await getStarship(id)
 
     expect(result).toEqual(starship)
-    expect(axios.get).toHaveBeenCalledWith(`/starships/${id}`)
+    expect(api.get).toHaveBeenCalledWith(`/starships/${id}`)
+  })
+
+  it('should throw an error if the API call fails', async () => {
+    const error = new Error('API error')
+    vi.mocked(api.get).mockRejectedValue(error)
+    const id = faker.number.int()
+
+    await expect(getStarship(id)).rejects.toThrow(error)
+    expect(api.get).toHaveBeenCalledWith(`/starships/${id}`)
   })
 })
