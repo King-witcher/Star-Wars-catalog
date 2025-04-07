@@ -12,7 +12,7 @@ import {
   formatPopulation,
   formatRotationPeriod,
 } from '@/utils/format'
-import { stripId } from '@/utils/swapi'``
+import { stripId } from '@/utils/swapi'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import IconButton from '@mui/material/IconButton'
