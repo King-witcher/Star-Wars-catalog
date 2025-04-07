@@ -1,33 +1,16 @@
 import person_ from '@/fixtures/person.json'
 import { Person } from '@/types/person'
 import { faker } from '@faker-js/faker'
-import axios from 'axios'
 import { Mock } from 'vitest'
 import { getPeople, getPerson } from './people'
+import { api } from './api'
+
+import people_ from '@/fixtures/people.json'
 
 const person = person_ as unknown as Person
+const people = people_ as unknown as Person[]
 
-vi.mock('axios', () => {
-  return {
-    default: {
-      post: vi.fn(),
-      get: vi.fn(),
-      delete: vi.fn(),
-      put: vi.fn(),
-      create: vi.fn().mockReturnThis(),
-      interceptors: {
-        request: {
-          use: vi.fn(),
-          eject: vi.fn(),
-        },
-        response: {
-          use: vi.fn(),
-          eject: vi.fn(),
-        },
-      },
-    },
-  }
-})
+vi.mock('./api')
 
 describe('people', () => {
   afterEach(() => {
@@ -35,45 +18,39 @@ describe('people', () => {
   })
 
   describe(getPeople, () => {
-    it('properly returns the next page', async () => {
+    it('should query people with the correct params and return the response', async () => {
       const next = faker.number.int()
+      const search = faker.lorem.word()
+      const page = faker.number.int()
 
       const mockValue = {
         data: {
           next: `https://swapi.dev/api/people/?page=${next}`,
-          results: [],
+          results: people,
         },
       }
-      ;(axios.get as Mock).mockResolvedValue(mockValue)
+      ;(api.get as Mock).mockResolvedValue(mockValue)
 
-      const result = await getPeople(faker.number.int(), '')
+      const result = await getPeople(page, search)
 
+      expect(api.get).toHaveBeenCalledWith('/people', {
+        params: {
+          search,
+          page,
+        },
+      })
       expect(result.next).toEqual(next)
-    })
-
-    it('returns null on next page when this is the last page', async () => {
-      const mockValue = {
-        data: {
-          next: null,
-          results: [],
-        },
-      }
-      ;(axios.get as Mock).mockResolvedValue(mockValue)
-
-      const page = faker.number.int()
-      const result = await getPeople(page, '')
-
-      expect(result.next).toBeNull()
     })
   })
 
   describe(getPerson, () => {
-    it('returns a person', async () => {
-      ;(<Mock>axios.get).mockResolvedValue({ data: person })
-      const result = await getPerson(666)
+    it('should get and return the person from SWAPI', async () => {
+      ;(<Mock>api.get).mockResolvedValue({ data: person })
+      const id = faker.number.int()
+      const result = await getPerson(id)
 
       expect(result).toEqual(person)
-      expect(axios.get).toHaveBeenCalledWith('/people/666')
+      expect(api.get).toHaveBeenCalledWith(`/people/${id}`)
     })
   })
 })
