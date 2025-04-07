@@ -1,7 +1,6 @@
 import person_ from '@/fixtures/person.json'
 import { Person } from '@/types/person'
 import { faker } from '@faker-js/faker'
-import { Mock } from 'vitest'
 import { getPeople, getPerson } from './people'
 import { api } from './api'
 
@@ -29,7 +28,7 @@ describe('people', () => {
           results: people,
         },
       }
-      ;(api.get as Mock).mockResolvedValue(mockValue)
+      vi.mocked(api.get).mockResolvedValue(mockValue)
 
       const result = await getPeople(page, search)
 
@@ -45,7 +44,7 @@ describe('people', () => {
 
   describe(getPerson, () => {
     it('should get and return the person from SWAPI', async () => {
-      ;(<Mock>api.get).mockResolvedValue({ data: person })
+      vi.mocked(api.get).mockResolvedValue({ data: person })
       const id = faker.number.int()
       const result = await getPerson(id)
 
