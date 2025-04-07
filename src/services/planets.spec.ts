@@ -1,7 +1,7 @@
 import planet_ from '@/fixtures/planet.json'
+import { Planet } from '@/types/planet'
 import { faker } from '@faker-js/faker'
 import { api } from './api'
-import { Planet } from '@/types/planet'
 import { getPlanet, getPlanets } from './planets'
 
 const planet = planet_ as unknown as Planet

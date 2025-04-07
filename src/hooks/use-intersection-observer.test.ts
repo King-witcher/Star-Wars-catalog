@@ -1,5 +1,5 @@
-import { useIntersectionObserver } from './use-intersection-observer'
 import { renderHook } from '@testing-library/react'
+import { useIntersectionObserver } from './use-intersection-observer'
 
 const mockObserve = vi.fn()
 const mockDisconnect = vi.fn()

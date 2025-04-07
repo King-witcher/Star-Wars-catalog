@@ -1,8 +1,8 @@
 import person_ from '@/fixtures/person.json'
 import { Person } from '@/types/person'
 import { faker } from '@faker-js/faker'
-import { getPeople, getPerson } from './people'
 import { api } from './api'
+import { getPeople, getPerson } from './people'
 
 import people_ from '@/fixtures/people.json'
 

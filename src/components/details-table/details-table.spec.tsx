@@ -1,8 +1,8 @@
-import { render, waitFor } from '@testing-library/react'
-import { DetailsTable } from './details-table'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render, waitFor } from '@testing-library/react'
 import { ReactNode } from 'react'
 import { ColumnDefinition } from '../table/table'
+import { DetailsTable } from './details-table'
 import '@testing-library/jest-dom/vitest'
 
 vi.mock('../table/table', () => ({

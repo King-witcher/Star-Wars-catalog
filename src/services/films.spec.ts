@@ -1,8 +1,8 @@
 import _film from '@/fixtures/film.json'
 import { Film } from '@/types/film'
 import { faker } from '@faker-js/faker'
-import { getFilm } from './films'
 import { api } from './api'
+import { getFilm } from './films'
 const film = _film as unknown as Film
 
 vi.mock('./api')

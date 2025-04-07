@@ -1,7 +1,7 @@
 import _species from '@/fixtures/species.json'
+import { Species } from '@/types/species'
 import { faker } from '@faker-js/faker'
 import { api } from './api'
-import { Species } from '@/types/species'
 import { getSpecies } from './species'
 const species = _species as unknown as Species
 

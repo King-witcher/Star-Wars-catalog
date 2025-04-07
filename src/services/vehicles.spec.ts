@@ -1,7 +1,7 @@
 import _vehicle from '@/fixtures/vehicle.json'
+import { Vehicle } from '@/types/vehicle'
 import { faker } from '@faker-js/faker'
 import { api } from './api'
-import { Vehicle } from '@/types/vehicle'
 import { getVehicle } from './vehicles'
 const vehicle = _vehicle as unknown as Vehicle
 
