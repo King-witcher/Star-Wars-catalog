@@ -1,14 +1,15 @@
 import { faker } from '@faker-js/faker'
-import { renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 import { useDebounce } from './use-debounce'
 
 describe(useDebounce, () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
 
-    return () => {
-      vi.restoreAllMocks()
-    }
+  afterEach(() => {
+    vi.restoreAllMocks()
+    vi.clearAllTimers()
   })
 
   it('should return the initial value immediately', () => {
@@ -17,21 +18,21 @@ describe(useDebounce, () => {
     expect(result.current).toBe(initial)
   })
 
-  // Tive dificuldade pra fazer esse teste com timers funcionar.
-  // Como sei que o codigo funciona, vou deixar como .todo e discutimos melhor na entrevista.
-  it.todo('should delay the value change', () => {
+  it('should delay the value change', () => {
     const delay = faker.number.int({ min: 500, max: 2000 })
     const { result, rerender } = renderHook(
       ({ value }) => useDebounce(value, delay),
       { initialProps: { value: 'old-value' } }
     )
 
-    // Value shouldn't change before the delay
+    // value shouldn't change before the delay
     rerender({ value: 'new-value' })
     expect(result.current).toBe('old-value')
 
-    // Value should only be updated after the delay
-    vi.advanceTimersByTimeAsync(delay + 50)
+    // value should only be updated after the delay
+    act(() => {
+      vi.advanceTimersByTime(delay + 10)
+    })
     expect(result.current).toBe('new-value')
   })
 })

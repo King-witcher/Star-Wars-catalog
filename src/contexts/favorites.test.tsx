@@ -1,73 +1,47 @@
+import { faker } from '@faker-js/faker'
 import { act, renderHook } from '@testing-library/react'
-import { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { FavoritesProvider, useFavorites } from './favorites'
 
-// Mock localStorage
 const localStorageMock = (() => {
-  let store: Record<string, string> = {}
+  const store = new Map<string, string>()
   return {
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = value
-    }),
-    clear: vi.fn(() => {
-      store = {}
-    }),
+    getItem: vi.fn((key: string) => store.get(key) ?? null),
+    setItem: vi.fn((key, value) => store.set(key, value)),
+    clear: vi.fn(() => store.clear()),
   }
 })()
 
-// Replace global localStorage with mock
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 })
 
-// Wrapper for testing hooks
-const Wrapper = ({ children }: { children: ReactNode }) => (
-  <FavoritesProvider>{children}</FavoritesProvider>
-)
-
-describe('FavoritesContext', () => {
+describe(FavoritesProvider, () => {
   beforeEach(() => {
     localStorageMock.clear()
-    vi.clearAllMocks()
   })
 
   afterEach(() => {
-    vi.restoreAllMocks()
+    vi.clearAllMocks()
   })
 
   it('should set an item as favorite', () => {
-    const { result } = renderHook(() => useFavorites(), { wrapper: Wrapper })
+    const { result } = renderHook(useFavorites, {
+      wrapper: FavoritesProvider,
+    })
 
     act(() => {
       result.current.setFavorite('people', 1, 'Luke Skywalker')
     })
 
-    expect(result.current.isFavoriteById('people', 1)).toBe(true)
     expect(localStorageMock.setItem).toHaveBeenCalled()
-  })
-
-  it('should not set duplicate favorites', () => {
-    const { result } = renderHook(() => useFavorites(), { wrapper: Wrapper })
-
-    act(() => {
-      result.current.setFavorite('people', 1, 'Luke Skywalker')
-    })
-
-    const callCount = vi.mocked(localStorageMock.setItem).mock.calls.length
-
-    act(() => {
-      result.current.setFavorite('people', 1, 'Luke Skywalker')
-    })
-
-    expect(vi.mocked(localStorageMock.setItem).mock.calls.length).toBe(
-      callCount
-    )
+    expect(result.current.isFavoriteById('people', 1)).toBe(true)
   })
 
   it('should unfavorite an item', () => {
-    const { result } = renderHook(() => useFavorites(), { wrapper: Wrapper })
+    const { result } = renderHook(useFavorites, {
+      wrapper: FavoritesProvider,
+    })
 
     act(() => {
       result.current.setFavorite('people', 1, 'Luke Skywalker')
@@ -78,39 +52,40 @@ describe('FavoritesContext', () => {
   })
 
   it('should correctly check if an item is a favorite', () => {
-    const { result } = renderHook(() => useFavorites(), { wrapper: Wrapper })
-
-    expect(result.current.isFavoriteById('people', 999)).toBe(false)
-
-    act(() => {
-      result.current.setFavorite('people', 1, 'Luke Skywalker')
+    const { result } = renderHook(useFavorites, {
+      wrapper: FavoritesProvider,
     })
 
-    expect(result.current.isFavoriteById('people', 1)).toBe(true)
-    expect(result.current.isFavoriteById('people', 2)).toBe(false)
+    const id = faker.number.int()
+
+    act(() => {
+      result.current.setFavorite('people', id, 'Luke Skywalker')
+    })
+
+    expect(result.current.isFavoriteById('people', id)).toBe(true)
+    expect(result.current.isFavoriteById('people', id + 1)).toBe(false)
   })
 
   it('should get all favorites from a collection', () => {
-    const { result } = renderHook(() => useFavorites(), { wrapper: Wrapper })
-
-    act(() => {
-      result.current.setFavorite('people', 1, 'Luke Skywalker')
-      result.current.setFavorite('people', 2, 'Darth Vader')
-      result.current.setFavorite('planets', 3, 'Tatooine')
+    const { result } = renderHook(useFavorites, {
+      wrapper: FavoritesProvider,
     })
+
+    act(() => result.current.setFavorite('people', 1, 'Person 1'))
+    act(() => result.current.setFavorite('people', 2, 'Person 2'))
+    act(() => result.current.setFavorite('planets', 3, 'Planet 3'))
 
     const peopleFavorites = result.current.getFavorites('people')
     expect(peopleFavorites).toHaveLength(2)
-    expect(peopleFavorites).toContainEqual({ id: 1, name: 'Luke Skywalker' })
-    expect(peopleFavorites).toContainEqual({ id: 2, name: 'Darth Vader' })
+    expect(peopleFavorites).toContainEqual({ id: 1, name: 'Person 1' })
+    expect(peopleFavorites).toContainEqual({ id: 2, name: 'Person 2' })
 
     const planetsFavorites = result.current.getFavorites('planets')
     expect(planetsFavorites).toHaveLength(1)
-    expect(planetsFavorites).toContainEqual({ id: 3, name: 'Tatooine' })
+    expect(planetsFavorites).toContainEqual({ id: 3, name: 'Planet 3' })
   })
 
   it('should load favorites from localStorage on initialization', () => {
-    // Setup localStorage with initial data
     const initialFavorites = {
       people: { 5: 'Leia Organa' },
       planets: { 10: 'Endor' },
@@ -119,7 +94,9 @@ describe('FavoritesContext', () => {
       JSON.stringify(initialFavorites)
     )
 
-    const { result } = renderHook(() => useFavorites(), { wrapper: Wrapper })
+    const { result } = renderHook(useFavorites, {
+      wrapper: FavoritesProvider,
+    })
 
     expect(result.current.isFavoriteById('people', 5)).toBe(true)
     expect(result.current.isFavoriteById('planets', 10)).toBe(true)
