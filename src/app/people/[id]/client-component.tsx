@@ -1,7 +1,7 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
-import { DetailsTable } from '@/components/details-table/details-table'
+import { DetailsList } from '@/components/details-table/details-table'
 import { useFavorites } from '@/contexts/favorites'
 import { Film } from '@/types/film'
 import { Person } from '@/types/person'
@@ -101,7 +101,7 @@ export function ClientComponent({
               ),
             }}
           />
-          <DetailsTable
+          <DetailsList
             title="Starships"
             data={starships}
             columns={starshipColumns}
@@ -111,7 +111,7 @@ export function ClientComponent({
           />
         </div>
         <div className="flex flex-col flex-1 gap-[20px]">
-          <DetailsTable
+          <DetailsList
             title="Vehicles"
             data={vehicles}
             columns={vehicleColumns}
@@ -119,7 +119,7 @@ export function ClientComponent({
             queryKey={['vehicles-by-person', id]}
             emptyFallback="No vehicles found for this character."
           />
-          <DetailsTable
+          <DetailsList
             title="Films"
             data={films}
             columns={filmColumns}
@@ -127,7 +127,7 @@ export function ClientComponent({
             queryKey={['films-by-person', id]}
             emptyFallback="No films found for this character."
           />
-          <DetailsTable
+          <DetailsList
             title="Species"
             data={species}
             columns={speciesColumns}

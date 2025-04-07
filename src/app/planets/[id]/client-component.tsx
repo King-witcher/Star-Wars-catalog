@@ -1,7 +1,7 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
-import { DetailsTable } from '@/components/details-table/details-table'
+import { DetailsList } from '@/components/details-table/details-table'
 import { useFavorites } from '@/contexts/favorites'
 import { Film } from '@/types/film'
 import { Person } from '@/types/person'
@@ -72,7 +72,7 @@ export function ClientComponent({ planet, residents, films }: Props) {
             }}
           />
 
-          <DetailsTable
+          <DetailsList
             title="Films"
             data={films}
             columns={filmColumns}
@@ -83,7 +83,7 @@ export function ClientComponent({ planet, residents, films }: Props) {
         </div>
 
         <div className="flex flex-col flex-1 gap-[20px]">
-          <DetailsTable
+          <DetailsList
             title="Residents"
             data={residents}
             columns={residentColumns}

@@ -11,6 +11,13 @@ interface Props<TData> extends Omit<TableProps<TData>, 'data'> {
   emptyFallback: string
 }
 
+/**
+ * This component extends the Table component and provides a standard way to display data in a table format.
+ * @param data - Promise that resolves to the array to be displayed in the table.
+ * @param queryKey - React-Query key for the query.
+ * @param title - Title of the table.
+ * @param emptyFallback - Fallback text to be displayed when there is no data.
+ */
 export function DetailsTable<TData>({
   data,
   queryKey,
@@ -25,18 +32,19 @@ export function DetailsTable<TData>({
 
   return (
     <div className="flex flex-col gap-[20px] mt-[20px]">
-      <Typography className="" variant="h5">
-        {title}
-      </Typography>
+      <Typography variant="h5">{title}</Typography>
 
       {query.isLoading && (
-        <div className=" flex items-center justify-center">
+        <div
+          data-testid="pending-state"
+          className="flex items-center justify-center"
+        >
           <CircularProgress size="80px" />
         </div>
       )}
 
       {Boolean(query.data?.length) && (
-        <Table data={query.data || []} {...tableProps} />
+        <Table data={query.data!} {...tableProps} />
       )}
 
       {query.data?.length === 0 && (
