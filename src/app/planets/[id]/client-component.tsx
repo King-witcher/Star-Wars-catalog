@@ -1,7 +1,7 @@
 'use client'
 
 import { AttributesTable } from '@/components/attributes-table/attributes-table'
-import { DetailsList } from '@/components/details-table/details-table'
+import { DetailsTable } from '@/components/details-table/details-table'
 import { useFavorites } from '@/contexts/favorites'
 import { Film } from '@/types/film'
 import { Person } from '@/types/person'
@@ -12,7 +12,7 @@ import {
   formatPopulation,
   formatRotationPeriod,
 } from '@/utils/format'
-import { stripId } from '@/utils/swapi'
+import { stripId } from '@/utils/swapi'``
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import IconButton from '@mui/material/IconButton'
@@ -72,7 +72,7 @@ export function ClientComponent({ planet, residents, films }: Props) {
             }}
           />
 
-          <DetailsList
+          <DetailsTable
             title="Films"
             data={films}
             columns={filmColumns}
@@ -83,7 +83,7 @@ export function ClientComponent({ planet, residents, films }: Props) {
         </div>
 
         <div className="flex flex-col flex-1 gap-[20px]">
-          <DetailsList
+          <DetailsTable
             title="Residents"
             data={residents}
             columns={residentColumns}
