@@ -3,7 +3,7 @@
 [![Lint](https://github.com/King-witcher/Star-Wars-catalog/actions/workflows/lint.yml/badge.svg)](https://github.com/King-witcher/Star-Wars-catalog/actions/workflows/lint.yml)
 [![Audit](https://github.com/King-witcher/Star-Wars-catalog/actions/workflows/audit.yml/badge.svg)](https://github.com/King-witcher/Star-Wars-catalog/actions/workflows/audit.yml)
 
-A comprehensive catalog of Star Wars characters and planets, starships, and more from across the galaxy far, far away.
+A comprehensive catalog of Star Wars characters and planets, and more from across the galaxy far, far away.
 
 ## About
 
