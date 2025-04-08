@@ -1,9 +1,9 @@
-import { render, fireEvent } from '@testing-library/react'
-import { FavoritesTable } from './favorites-table'
 import * as favoritesContext from '@/contexts/favorites'
+import { fireEvent, render } from '@testing-library/react'
+import { FavoritesTable } from './favorites-table'
 import '@testing-library/jest-dom'
-import { faker } from '@faker-js/faker'
 import { Collection } from '@/contexts/favorites'
+import { faker } from '@faker-js/faker'
 
 const baseFavoritesContextMock = {
   getFavorites: vi.fn(),

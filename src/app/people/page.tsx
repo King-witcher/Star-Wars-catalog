@@ -1,8 +1,8 @@
 'use client'
 
+import { EntityListTemplate } from '@/components/entity-list-template/entity-list-template'
 import { getPeople } from '@/services/people'
 import { columnDefs } from './columns'
-import { EntityListTemplate } from '@/components/entity-list-template/entity-list-template'
 
 export default function Page() {
   return (

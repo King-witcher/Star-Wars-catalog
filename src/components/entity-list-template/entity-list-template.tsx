@@ -1,15 +1,15 @@
 'use client'
 
 import { ColumnDefinition, Table } from '@/components/table/table'
+import { Collection } from '@/contexts/favorites'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
+import { PaginatedData } from '@/types/paginated-data'
 import CircularProgress from '@mui/material/CircularProgress'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { ChangeEvent, Key, useState } from 'react'
-import { Collection } from '@/contexts/favorites'
-import { PaginatedData } from '@/types/paginated-data'
 
 export interface Props<T> {
   collection: Collection
