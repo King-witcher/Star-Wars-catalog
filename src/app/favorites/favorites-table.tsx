@@ -46,13 +46,21 @@ export function FavoritesTable({ collection, ...props }: Props) {
                   <Link
                     href={`/${collection}/${favorite.id}`}
                     className="absolute inset-0"
+                    aria-label={`View details for ${favorite.name}`}
                   />
-                  <Typography fontWeight={500}>{favorite.name}</Typography>
+                  <Typography
+                    fontWeight={500}
+                    id={`favorite-name-${favorite.id}`}
+                    aria-hidden="true"
+                  >
+                    {favorite.name}
+                  </Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Tooltip title="Remove">
                     <IconButton
                       onClick={() => unfavorite(collection, favorite.id)}
+                      aria-label={`Remove ${favorite.name} from favorites`}
                     >
                       <CloseIcon />
                     </IconButton>
